@@ -1,3 +1,6 @@
+
+import lib.jdb.connection.JDBConnection;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,6 +19,16 @@ public class JFPrincipal extends javax.swing.JFrame {
     public JFPrincipal() {
         initComponents();
         jDBConnection1.connectDB();
+        jDBUpdate1.setJDBConnection(new JDBConnection());
+        jDBUpdate1.setSQL("call registra_pendencia()");
+        jDBUpdate1.execUpdate();
+    }
+    public JFPrincipal(JDBConnection jdb) {
+        initComponents();
+        jDBConnection1 = jdb;
+        jDBUpdate1.setJDBConnection(jDBConnection1);
+        jDBUpdate1.setSQL("call registra_pendencia()");
+        jDBUpdate1.execUpdate();
     }
 
     /**
@@ -28,6 +41,7 @@ public class JFPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDBConnection1 = new lib.jdb.connection.JDBConnection();
+        jDBUpdate1 = new lib.jdb.jdbupdate.JDBUpdate();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -143,5 +157,6 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private lib.jdb.connection.JDBConnection jDBConnection1;
+    private lib.jdb.jdbupdate.JDBUpdate jDBUpdate1;
     // End of variables declaration//GEN-END:variables
 }

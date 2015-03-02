@@ -10,6 +10,8 @@
         <Property name="userName" type="java.lang.String" value="root"/>
       </Properties>
     </Component>
+    <Component class="lib.jdb.jdbupdate.JDBUpdate" name="jDBUpdate1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
