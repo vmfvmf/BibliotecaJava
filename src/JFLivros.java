@@ -29,6 +29,7 @@ public class JFLivros extends javax.swing.JFrame {
                             + " inner join autor au on au.id = t.autor_id ",
             qryEditora = "select * from editora ",
             qryPrograma = "select * from programa";
+    JFAssistenteCodBarras ja=null;
     /**
      * Creates new form JFAluno
      */
@@ -154,6 +155,11 @@ public class JFLivros extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Livros");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -778,9 +784,17 @@ public class JFLivros extends javax.swing.JFrame {
     }//GEN-LAST:event_jDBButtonNew1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFAssistenteCodBarras ja = new JFAssistenteCodBarras();
+        if(ja==null){
+            ja = new JFAssistenteCodBarras(this);
+            ja.setLocation((int)this.getSize().getWidth()+10, 0);
+        }
+        ja.addCod(jDBQueryLivros.getCurrentFieldValue("id"),jDBTextFieldTitulo.getText());
         ja.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        if(ja!=null)ja.dispose();
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
