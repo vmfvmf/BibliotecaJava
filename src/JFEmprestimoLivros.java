@@ -16,6 +16,9 @@ import lib.jdb.connection.JDBConnection;
  * @author vmf
  */
 public class JFEmprestimoLivros extends javax.swing.JFrame {
+    String qryLivro ="select concat(t.titulo, \" | \",au.autor,\" | \",a.assunto) as \"livro\" from livro l inner join"
+                            + " titulo t on t.id = l.titulo_id inner join assunto a on a.id = t.assunto_id "
+                                + " inner join autor au on t.autor_id = au.id ";
     /**
      * Creates new form JFAluno
      */
@@ -68,7 +71,6 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jDBTextFieldPzDev = new lib.jdb.control.jdbtextfield.JDBTextField();
         jDBTextFieldIdLivro = new lib.jdb.control.jdbtextfield.JDBTextField();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButtonSelUsuario1 = new javax.swing.JButton();
         jDBTextField4 = new lib.jdb.control.jdbtextfield.JDBTextField();
@@ -82,6 +84,8 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBButtonLast1 = new lib.jdb.control.jdbbuttonlast.JDBButtonLast();
         jSeparator3 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooserDataDev = new com.toedter.calendar.JDateChooser();
 
         jDBQueryEmprestimos.setSQL("select * from emprestimo");
         jDBQueryEmprestimos.addScrollEventListener(new lib.jdb.jdbquery.event.ScrollEventListener() {
@@ -178,10 +182,13 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBTextFieldIdLivro.setJDBQuery(jDBQuerySlaveEmpLivros);
         jDBTextFieldIdLivro.setFieldName("livro_id");
         jDBTextFieldIdLivro.setjDBControlStyle(jDBControlStyle1);
+        jDBTextFieldIdLivro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDBTextFieldIdLivroKeyReleased(evt);
+            }
+        });
 
-        jLabel6.setText("Tombo");
-
-        jLabel7.setText("Livro");
+        jLabel7.setText("Tombo / Livro");
 
         jButtonSelUsuario1.setText("...");
         jButtonSelUsuario1.addActionListener(new java.awt.event.ActionListener() {
@@ -195,7 +202,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBTextField4.setFieldName("livro");
         jDBTextField4.setjDBControlStyle(jDBControlStyle1);
 
-        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
+        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
         jDBButtonDelete1.setJDBQuery(jDBQuerySlaveEmpLivros);
 
         jLabel8.setText("Data Devolução");
@@ -222,6 +229,18 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
             }
         });
 
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
+            }
+        });
+
+        jDateChooserDataDev.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooserDataDevPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -232,26 +251,30 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBTextFieldPzDev, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDBTextFieldPzDev, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBTextFieldDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDBTextFieldIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel8)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDBTextFieldDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateChooserDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonSelUsuario1)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(285, 285, 285))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDBTextFieldIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDBTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())))
+                                .addGap(64, 64, 64))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2)
@@ -342,20 +365,20 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDBTextFieldPzDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jButtonSelUsuario1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jDBTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBTextFieldIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jDBTextFieldIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jDBTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDBTextFieldDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jDBTextFieldDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonSelUsuario1)
+                            .addComponent(jLabel7))
+                        .addGap(33, 33, 33))
+                    .addComponent(jDateChooserDataDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addGap(49, 49, 49))
@@ -372,6 +395,43 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jDBQueryEmprestimosAfterScroll
 
+    private void jDBQuerySlaveEmpLivrosAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosAfterScroll
+        jDBQueryLivro.setSQL(qryLivro+" where l.id = "+jDBQuerySlaveEmpLivros.getCurrentFieldValue("livro_id"));
+                    jDBQueryLivro.execQuery();
+    }//GEN-LAST:event_jDBQuerySlaveEmpLivrosAfterScroll
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jDBButtonCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonCancel1ActionPerformed
+        jDBQueryLivro.setSQL(qryLivro+ " where l.id = "+jDBQuerySlaveEmpLivros.getCurrentFieldValue("livro_id"));
+                    jDBQueryLivro.execQuery();
+    }//GEN-LAST:event_jDBButtonCancel1ActionPerformed
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        if(evt.getPropertyName().equals("date")){
+            jDBTextFieldPzDev.setText(jDateChooser1.getJCalendar().getDate().toLocaleString().split(" ")[0]);
+            jDBQuerySlaveEmpLivros.edit();
+            jDBQuerySlaveEmpLivros.setNewCurrentFieldValue("prazo_devolucao", jDBTextFieldPzDev.getText());
+        }
+    }//GEN-LAST:event_jDateChooser1PropertyChange
+
+    private void jDateChooserDataDevPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserDataDevPropertyChange
+        if(evt.getPropertyName().equals("date")){
+            jDBTextFieldDataDev.setText(jDateChooserDataDev.getJCalendar().getDate().toLocaleString().split(" ")[0]);
+            jDBQuerySlaveEmpLivros.edit();
+            jDBQuerySlaveEmpLivros.setNewCurrentFieldValue("data_devolucao", jDBTextFieldDataDev.getText());
+        }
+    }//GEN-LAST:event_jDateChooserDataDevPropertyChange
+
+    private void jDBTextFieldIdLivroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextFieldIdLivroKeyReleased
+        if(jDBTextFieldIdLivro.getText().matches("\\d")){
+            jDBQueryLivro.setSQL(qryLivro+" where l.id ="+jDBTextFieldIdLivro.getText());
+            jDBQueryLivro.execQuery();
+        }
+    }//GEN-LAST:event_jDBTextFieldIdLivroKeyReleased
+
     private void jButtonSelUsuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelUsuario1ActionPerformed
         JFLivros jfl = new JFLivros(jDBQueryEmprestimos.getJDBConnection(), true);
         jfl.show();
@@ -381,15 +441,13 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
             @Override public void windowClosed(WindowEvent e) {
                 if(jfl.selecionar){
                     if(jfl.isDisponivel()){
-                        jDBQueryLivro.setSQL("select concat(t.titulo, \" | \",t.autor,\" | \",a.assunto) as \"livro\" from livro l inner join"
-                                + " titulo t on t.id = l.titulo_id inner join assunto a on a.id = t.assunto_id "
-                                + " where l.id = "+jfl.getId());
+                        jDBQueryLivro.setSQL(qryLivro+ " where l.id = "+jfl.getId());
                         jDBQueryLivro.execQuery();
                         jDBTextFieldIdLivro.setText(jfl.getId());
                         jDBQuerySlaveEmpLivros.edit();
                         jDBQuerySlaveEmpLivros.setNewCurrentFieldValue("livro_id", jfl.getId());
-                    }else 
-                        JOptionPane.showMessageDialog(null, "Livro indisponível");
+                    }else
+                    JOptionPane.showMessageDialog(null, "Livro indisponível");
                 }
             }
             @Override public void windowIconified(WindowEvent e) {}
@@ -398,24 +456,6 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
             @Override public void windowDeactivated(WindowEvent e) {}
         });
     }//GEN-LAST:event_jButtonSelUsuario1ActionPerformed
-
-    private void jDBQuerySlaveEmpLivrosAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosAfterScroll
-        jDBQueryLivro.setSQL("select concat(t.titulo, \" | \",t.autor,\" | \",a.assunto) as \"livro\" from livro l inner join "+
-                          " titulo t on t.id = l.titulo_id inner join assunto a on a.id = t.assunto_id "+
-                           " where l.id = "+jDBQuerySlaveEmpLivros.getCurrentFieldValue("livro_id"));
-                    jDBQueryLivro.execQuery();
-    }//GEN-LAST:event_jDBQuerySlaveEmpLivrosAfterScroll
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jDBButtonCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonCancel1ActionPerformed
-        jDBQueryLivro.setSQL("select concat(t.titulo, \" | \",t.autor,\" | \",a.assunto) as \"livro\" from livro l inner join "+
-                          " titulo t on t.id = l.titulo_id inner join assunto a on a.id = t.assunto_id "+
-                           " where l.id = "+jDBQuerySlaveEmpLivros.getCurrentFieldValue("livro_id"));
-                    jDBQueryLivro.execQuery();
-    }//GEN-LAST:event_jDBButtonCancel1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -478,12 +518,13 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldIdLivro;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldIdUser;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldPzDev;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooserDataDev;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;

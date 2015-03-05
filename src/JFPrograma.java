@@ -12,17 +12,22 @@ import lib.jdb.connection.JDBConnection;
  * @author vmf
  */
 public class JFPrograma extends javax.swing.JFrame {
-
+    public boolean selecionar = false;
     /**
      * Creates new form JFAluno
      */
     public JFPrograma() {
         initComponents();
+        jButtonSelecionar.setVisible(selecionar);
     }
     public JFPrograma(JDBConnection jdb) {
-        initComponents();
+        this();
         jDBQueryPrograma.setJDBConnection(jdb);
         jDBQueryPrograma.execQuery();
+    }
+    
+    public void setSelecionarVisible(){
+        jButtonSelecionar.setVisible(true);
     }
 
     /**
@@ -50,6 +55,7 @@ public class JFPrograma extends javax.swing.JFrame {
         jDBButtonDelete1 = new lib.jdb.control.jdbbuttondelete.JDBButtonDelete();
         jSeparator3 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jButtonSelecionar = new javax.swing.JButton();
 
         jDBQueryPrograma.setSQL("select * from programa");
 
@@ -87,7 +93,7 @@ public class JFPrograma extends javax.swing.JFrame {
         jDBTable1.setJDBQuery(jDBQueryPrograma);
         jScrollPane1.setViewportView(jDBTable1);
 
-        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
+        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
         jDBButtonDelete1.setJDBQuery(jDBQueryPrograma);
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -97,6 +103,14 @@ public class JFPrograma extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButtonSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/acpt.png"))); // NOI18N
+        jButtonSelecionar.setText("Selecionar");
+        jButtonSelecionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelecionarActionPerformed(evt);
             }
         });
 
@@ -135,8 +149,13 @@ public class JFPrograma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(104, 104, 104)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(104, 104, 104))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonSelecionar)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,7 +177,10 @@ public class JFPrograma extends javax.swing.JFrame {
                                 .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jSeparator3))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(36, 36, 36)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -174,6 +196,11 @@ public class JFPrograma extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelecionarActionPerformed
+        selecionar=true;
+        this.dispose();
+    }//GEN-LAST:event_jButtonSelecionarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,6 +239,7 @@ public class JFPrograma extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonSelecionar;
     private lib.jdb.control.jdbbuttoncancel.JDBButtonCancel jDBButtonCancel1;
     private lib.jdb.control.jdbbuttondelete.JDBButtonDelete jDBButtonDelete1;
     private lib.jdb.control.jdbbuttonfirst.JDBButtonFirst jDBButtonFirst1;
@@ -228,4 +256,8 @@ public class JFPrograma extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
+
+    String getID() {
+        return jDBQueryPrograma.getCurrentFieldValue("id");
+    }
 }

@@ -17,6 +17,8 @@ import lib.jdb.connection.JDBConnection;
  */
 public class JFTitulos extends javax.swing.JFrame {
     public boolean selecionar = false;
+    String qryAutor = "select * from autor ", 
+            qryAssunto = "select * from assunto ";
 
     /**
      * Creates new form JFAluno
@@ -26,7 +28,6 @@ public class JFTitulos extends javax.swing.JFrame {
         jButtonSelecionar.setVisible(false);
         jDBTable1.setFieldsTitle("id", "Cod.");
         jDBTable1.setFieldsTitle("titulo", "Título");
-        jDBTable1.setFieldsTitle("autor", "Autor");
         jDBTable1.setFieldsTitle("resenha", "Resenha");
     }
     public JFTitulos(JDBConnection jdb) {
@@ -34,7 +35,6 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBQueryTitulos.setJDBConnection(jdb);
         jDBQueryAssunto.setJDBConnection(jdb);
         jDBQueryAutor.setJDBConnection(jdb);
-        jDBQueryLocalizacao.setJDBConnection(jdb);
         jDBQueryTitulos.execQuery();
     }
     public JFTitulos(JDBConnection jdb, boolean selecionar) {
@@ -42,7 +42,6 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBQueryTitulos.setJDBConnection(jdb);
         jDBQueryAssunto.setJDBConnection(jdb);
         jDBQueryAutor.setJDBConnection(jdb);
-        jDBQueryLocalizacao.setJDBConnection(jdb);
         jDBQueryTitulos.execQuery();
         if(selecionar) jButtonSelecionar.setVisible(true);
     }
@@ -59,10 +58,9 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBQueryTitulos = new lib.jdb.jdbquery.JDBQuery();
         jDBControlStyle1 = new lib.jdb.control.jdbcontrolstyle.JDBControlStyle();
         jDBQueryAssunto = new lib.jdb.jdbquery.JDBQuery();
-        jDBQueryLocalizacao = new lib.jdb.jdbquery.JDBQuery();
-        jDBQueryAutor = new lib.jdb.jdbquery.JDBQuery();
         jDBLookUpField1 = new lib.jdb.control.jdblookupfield.JDBLookUpField();
         jDBTableStyle1 = new lib.jdb.control.jdbtable.JDBTableStyle();
+        jDBQueryAutor = new lib.jdb.jdbquery.JDBQuery();
         jDBButtonNew1 = new lib.jdb.control.jdbbuttonnew.JDBButtonNew();
         jDBButtonSave1 = new lib.jdb.control.jdbbuttonsave.JDBButtonSave();
         jDBButtonCancel1 = new lib.jdb.control.jdbbuttoncancel.JDBButtonCancel();
@@ -71,16 +69,11 @@ public class JFTitulos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jDBTable1 = new lib.jdb.control.jdbtable.JDBTable();
-        jLabel4 = new javax.swing.JLabel();
-        jButtonSelLocalizacao = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jDBTextArea1 = new lib.jdb.control.jdbtextarea.JDBTextArea();
         jButtonSelAssunto = new javax.swing.JButton();
-        jDBLookUpComboBoxAssunto = new lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox();
-        jDBLookUpComboBoxLocalizacao = new lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox();
         jLabel3 = new javax.swing.JLabel();
         jDBButtonDelete1 = new lib.jdb.control.jdbbuttondelete.JDBButtonDelete();
-        jDBTextFieldTitulo1 = new lib.jdb.control.jdbtextfield.JDBTextField();
         jButtonSelecionar = new javax.swing.JButton();
         jDBButtonFirst2 = new lib.jdb.control.jdbbuttonfirst.JDBButtonFirst();
         jDBButtonPrevious2 = new lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious();
@@ -88,14 +81,28 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBButtonLast2 = new lib.jdb.control.jdbbuttonlast.JDBButtonLast();
         jButton1 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
+        jButtonSelAssunto1 = new javax.swing.JButton();
+        jDBTextFieldAutorId = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jDBTextFieldTitulo1 = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jDBTextFieldAssunto = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jDBTextFieldAssuntoId = new lib.jdb.control.jdbtextfield.JDBTextField();
 
         jDBQueryTitulos.setSQL("select * from titulo");
+        jDBQueryTitulos.setSaveManually(true);
+        jDBQueryTitulos.addSaveManuallyEventListener(new lib.jdb.jdbquery.event.SaveManuallyEventListener() {
+            public void onSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {
+                jDBQueryTitulosOnSaveManually(evt);
+            }
+        });
+        jDBQueryTitulos.addScrollEventListener(new lib.jdb.jdbquery.event.ScrollEventListener() {
+            public void beforeScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {
+            }
+            public void afterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {
+                jDBQueryTitulosAfterScroll(evt);
+            }
+        });
 
         jDBQueryAssunto.setSQL("select * from assunto");
-
-        jDBQueryLocalizacao.setSQL("select * from localizacao");
-
-        jDBLookUpField1.setJDBListQuery(jDBQueryAutor);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Titulos");
@@ -117,7 +124,7 @@ public class JFTitulos extends javax.swing.JFrame {
 
         jLabel1.setText("Titulo");
 
-        jLabel2.setText("Assunto");
+        jLabel2.setText("Código / Assunto");
 
         jDBTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,18 +135,9 @@ public class JFTitulos extends javax.swing.JFrame {
             }
         ));
         jDBTable1.setJDBQuery(jDBQueryTitulos);
-        jDBTable1.setInvisibleFields("assunto_id localizacao_id");
+        jDBTable1.setInvisibleFields("assunto_id autor_id");
         jDBTable1.setjDBTableStyle(jDBTableStyle1);
         jScrollPane1.setViewportView(jDBTable1);
-
-        jLabel4.setText("Localização");
-
-        jButtonSelLocalizacao.setText("...");
-        jButtonSelLocalizacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSelLocalizacaoActionPerformed(evt);
-            }
-        });
 
         jLabel8.setText("Resenha");
 
@@ -154,28 +152,10 @@ public class JFTitulos extends javax.swing.JFrame {
             }
         });
 
-        jDBLookUpComboBoxAssunto.setJDBListQuery(jDBQueryAssunto);
-        jDBLookUpComboBoxAssunto.setJDBQuery(jDBQueryTitulos);
-        jDBLookUpComboBoxAssunto.setInvisibleFields("id");
-        jDBLookUpComboBoxAssunto.setjDBControlStyle(jDBControlStyle1);
-        jDBLookUpComboBoxAssunto.setKeyField("assunto_id");
-        jDBLookUpComboBoxAssunto.setKeyListField("id");
+        jLabel3.setText("Código / Autor");
 
-        jDBLookUpComboBoxLocalizacao.setJDBListQuery(jDBQueryLocalizacao);
-        jDBLookUpComboBoxLocalizacao.setJDBQuery(jDBQueryTitulos);
-        jDBLookUpComboBoxLocalizacao.setInvisibleFields("id");
-        jDBLookUpComboBoxLocalizacao.setjDBControlStyle(jDBControlStyle1);
-        jDBLookUpComboBoxLocalizacao.setKeyField("localizacao_id");
-        jDBLookUpComboBoxLocalizacao.setKeyListField("id");
-
-        jLabel3.setText("Autor");
-
-        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
+        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
         jDBButtonDelete1.setJDBQuery(jDBQueryTitulos);
-
-        jDBTextFieldTitulo1.setJDBQuery(jDBQueryTitulos);
-        jDBTextFieldTitulo1.setFieldName("autor");
-        jDBTextFieldTitulo1.setjDBControlStyle(jDBControlStyle1);
 
         jButtonSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/acpt.png"))); // NOI18N
         jButtonSelecionar.setText("Selecionar");
@@ -203,6 +183,41 @@ public class JFTitulos extends javax.swing.JFrame {
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jButtonSelAssunto1.setText("...");
+        jButtonSelAssunto1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelAssunto1ActionPerformed(evt);
+            }
+        });
+
+        jDBTextFieldAutorId.setJDBQuery(jDBQueryTitulos);
+        jDBTextFieldAutorId.setFieldName("autor_id");
+        jDBTextFieldAutorId.setjDBControlStyle(jDBControlStyle1);
+        jDBTextFieldAutorId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDBTextFieldAutorIdKeyReleased(evt);
+            }
+        });
+
+        jDBTextFieldTitulo1.setEditable(false);
+        jDBTextFieldTitulo1.setJDBQuery(jDBQueryAutor);
+        jDBTextFieldTitulo1.setFieldName("autor");
+        jDBTextFieldTitulo1.setjDBControlStyle(jDBControlStyle1);
+
+        jDBTextFieldAssunto.setEditable(false);
+        jDBTextFieldAssunto.setJDBQuery(jDBQueryAssunto);
+        jDBTextFieldAssunto.setFieldName("assunto");
+        jDBTextFieldAssunto.setjDBControlStyle(jDBControlStyle1);
+
+        jDBTextFieldAssuntoId.setJDBQuery(jDBQueryTitulos);
+        jDBTextFieldAssuntoId.setFieldName("assunto_id");
+        jDBTextFieldAssuntoId.setjDBControlStyle(jDBControlStyle1);
+        jDBTextFieldAssuntoId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDBTextFieldAssuntoIdKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,10 +227,27 @@ public class JFTitulos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBTextFieldTitulo1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jDBTextArea1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE))
+                        .addGap(184, 184, 184))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jDBTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jDBTextFieldAssuntoId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDBTextFieldAssunto, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonSelAssunto))))
+                            .addComponent(jLabel8)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jDBButtonFirst2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,34 +270,17 @@ public class JFTitulos extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonSelAssunto1)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jDBTextArea1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jDBTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(13, 13, 13)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonSelAssunto))
-                                            .addComponent(jDBLookUpComboBoxAssunto, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonSelLocalizacao)
-                                        .addGap(0, 48, Short.MAX_VALUE))
-                                    .addComponent(jDBLookUpComboBoxLocalizacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(184, 184, 184))))
+                        .addComponent(jDBTextFieldAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDBTextFieldTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,46 +309,32 @@ public class JFTitulos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jButtonSelAssunto)
-                    .addComponent(jButtonSelLocalizacao))
+                    .addComponent(jButtonSelAssunto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jDBTextFieldAssuntoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jDBTextFieldAssunto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDBTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jDBTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDBLookUpComboBoxAssunto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDBLookUpComboBoxLocalizacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
+                    .addComponent(jButtonSelAssunto1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDBTextFieldTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jDBTextFieldAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDBTextFieldTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDBTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonSelLocalizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelLocalizacaoActionPerformed
-        JFLocalizacao jl = new JFLocalizacao(jDBQueryTitulos.getJDBConnection());
-        jl.show();
-        jl.addWindowListener(new WindowListener() {
-            @Override public void windowOpened(WindowEvent e) {}
-            @Override public void windowClosing(WindowEvent e) {
-                jDBQueryTitulos.setNewCurrentFieldValue("localizacao_id", jl.getId());
-                jDBQueryLocalizacao.execQuery();
-            }
-            @Override public void windowClosed(WindowEvent e) {}
-            @Override public void windowIconified(WindowEvent e) {}
-            @Override public void windowDeiconified(WindowEvent e) {}
-            @Override public void windowActivated(WindowEvent e) {}
-            @Override public void windowDeactivated(WindowEvent e) {}
-        });
-    }//GEN-LAST:event_jButtonSelLocalizacaoActionPerformed
 
     private void jButtonSelAssuntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelAssuntoActionPerformed
         JFAssunto ja = new JFAssunto(jDBQueryTitulos.getJDBConnection());
@@ -342,8 +343,13 @@ public class JFTitulos extends javax.swing.JFrame {
             @Override public void windowOpened(WindowEvent e) {}
             @Override public void windowClosing(WindowEvent e) {            }
             @Override public void windowClosed(WindowEvent e) {
-                jDBQueryTitulos.setNewCurrentFieldValue("assunto_id", ja.getId());
-                jDBQueryAssunto.execQuery();
+                if(ja.selecionar){
+                    jDBQueryTitulos.setNewCurrentFieldValue("assunto_id", ja.getId());
+                    jDBTextFieldAssuntoId.setText(ja.getId());
+                    jDBQueryTitulos.edit();
+                    jDBQueryAssunto.setSQL(qryAssunto+" where id ="+ja.getId());
+                    jDBQueryAssunto.execQuery();
+                }
             }
             @Override public void windowIconified(WindowEvent e) {}
             @Override public void windowDeiconified(WindowEvent e) {}
@@ -364,6 +370,64 @@ public class JFTitulos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonSelAssunto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelAssunto1ActionPerformed
+        JFAutor ja = new JFAutor(jDBQueryTitulos.getJDBConnection());
+        ja.show();
+        ja.addWindowListener(new WindowListener() {
+            @Override public void windowOpened(WindowEvent e) {}
+            @Override public void windowClosing(WindowEvent e) {            }
+            @Override public void windowClosed(WindowEvent e) {
+                if(ja.selecionar){
+                    jDBQueryTitulos.setNewCurrentFieldValue("autor_id", ja.getId());
+                    jDBTextFieldAutorId.setText(ja.getId());
+                    jDBQueryTitulos.edit();
+                    jDBQueryAutor.setSQL(qryAutor+" where id ="+ja.getId());
+                    jDBQueryAutor.execQuery();
+                }
+            }
+            @Override public void windowIconified(WindowEvent e) {}
+            @Override public void windowDeiconified(WindowEvent e) {}
+            @Override public void windowActivated(WindowEvent e) {}
+            @Override public void windowDeactivated(WindowEvent e) {}
+        });
+    }//GEN-LAST:event_jButtonSelAssunto1ActionPerformed
+
+    private void jDBQueryTitulosAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQueryTitulosAfterScroll
+        jDBQueryAutor.setSQL(qryAutor+" where id ="+jDBQueryTitulos.getCurrentFieldValue("autor_id"));
+        jDBQueryAutor.execQuery();
+        jDBQueryAssunto.setSQL(qryAssunto+" where id ="+jDBQueryTitulos.getCurrentFieldValue("assunto_id"));
+        jDBQueryAssunto.execQuery();
+    }//GEN-LAST:event_jDBQueryTitulosAfterScroll
+
+    private void jDBTextFieldAutorIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextFieldAutorIdKeyReleased
+        if(jDBTextFieldAutorId.getText().matches("\\d")){
+            jDBQueryAutor.setSQL(qryAutor+" where id ="+jDBTextFieldAutorId.getText());
+            jDBQueryAutor.execQuery();
+        }
+    }//GEN-LAST:event_jDBTextFieldAutorIdKeyReleased
+
+    private void jDBTextFieldAssuntoIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextFieldAssuntoIdKeyReleased
+        if(jDBTextFieldAssuntoId.getText().matches("\\d")){
+            jDBQueryAssunto.setSQL(qryAssunto+" where id ="+jDBTextFieldAssuntoId.getText());
+            jDBQueryAssunto.execQuery();
+        }
+    }//GEN-LAST:event_jDBTextFieldAssuntoIdKeyReleased
+
+    private void jDBQueryTitulosOnSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {//GEN-FIRST:event_jDBQueryTitulosOnSaveManually
+        String msgError="" ;
+        if(jDBTextFieldAutorId.getText().isEmpty()){
+            msgError+="Escolha um Autor!\n";
+        }
+        if(jDBTextFieldAssuntoId.getText().isEmpty()){
+            msgError+="Escolha um Assunto!\n";
+        }
+        if(jDBTextFieldTitulo.getText().isEmpty()){
+            msgError+="Digite um Título!\n";
+        }
+        if(msgError.isEmpty()) jDBQueryTitulos.save();
+        else JOptionPane.showMessageDialog(null, msgError);
+    }//GEN-LAST:event_jDBQueryTitulosOnSaveManually
 
     /**
      * @param args the command line arguments
@@ -403,7 +467,7 @@ public class JFTitulos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonSelAssunto;
-    private javax.swing.JButton jButtonSelLocalizacao;
+    private javax.swing.JButton jButtonSelAssunto1;
     private javax.swing.JButton jButtonSelecionar;
     private lib.jdb.control.jdbbuttoncancel.JDBButtonCancel jDBButtonCancel1;
     private lib.jdb.control.jdbbuttondelete.JDBButtonDelete jDBButtonDelete1;
@@ -414,22 +478,21 @@ public class JFTitulos extends javax.swing.JFrame {
     private lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious jDBButtonPrevious2;
     private lib.jdb.control.jdbbuttonsave.JDBButtonSave jDBButtonSave1;
     private lib.jdb.control.jdbcontrolstyle.JDBControlStyle jDBControlStyle1;
-    private lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox jDBLookUpComboBoxAssunto;
-    private lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox jDBLookUpComboBoxLocalizacao;
     private lib.jdb.control.jdblookupfield.JDBLookUpField jDBLookUpField1;
     private lib.jdb.jdbquery.JDBQuery jDBQueryAssunto;
     private lib.jdb.jdbquery.JDBQuery jDBQueryAutor;
-    private lib.jdb.jdbquery.JDBQuery jDBQueryLocalizacao;
     private lib.jdb.jdbquery.JDBQuery jDBQueryTitulos;
     private lib.jdb.control.jdbtable.JDBTable jDBTable1;
     private lib.jdb.control.jdbtable.JDBTableStyle jDBTableStyle1;
     private lib.jdb.control.jdbtextarea.JDBTextArea jDBTextArea1;
+    private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldAssunto;
+    private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldAssuntoId;
+    private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldAutorId;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldTitulo;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldTitulo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator3;

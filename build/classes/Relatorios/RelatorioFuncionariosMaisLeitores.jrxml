@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3cdb132-6d3d-4d0c-a272-86fd1929d048">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0FFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="AlunosMaisLeitores" uuid="9f1b392d-7a59-47e2-814c-4e8db0364826">
+		<queryString language="SQL">
+			<![CDATA[select u.nome as "Nome", u.serie as "Série",count(*) as "Livros Emprestados" from usuario u 
+
+inner join emprestimo e on u.id = e.usuario_id
+inner join emprestimo_livros el on e.id = el.emprestimo_id
+
+where u.tipo = "Aluno"
+
+group by e.id]]>
+		</queryString>
+		<field name="Nome" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="Série" class="java.lang.String"/>
+		<field name="Livros Emprestados" class="java.lang.Long"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[select u.nome as "Nome", count(*) as Emprestimos from usuario u 
+
+inner join emprestimo e on u.id = e.usuario_id
+inner join emprestimo_livros el on e.id = el.emprestimo_id
+
+where u.tipo = "Funcionario"
+
+group by u.id
+
+order by Emprestimos desc]]>
+	</queryString>
+	<field name="Nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Emprestimos" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#101717" backcolor="#101717" uuid="6f5a6de3-8901-47eb-b507-6b10772ccf11"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="221" height="20" forecolor="#F0E4E4" uuid="9b601488-d6f3-44a6-b885-0b75315900d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="100" height="20" forecolor="#F0E4E4" uuid="dada0e05-8c81-4489-af28-a728507429ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empréstimos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#DBE0E0" backcolor="#DCD7D7" uuid="fb9e4711-aec2-4510-8376-79ed97e0510e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="221" height="20" uuid="be581662-371c-49a7-951f-948367d34858"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="0" width="100" height="20" uuid="7a872ace-86a5-4d0c-945e-9107b57ab4e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Emprestimos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

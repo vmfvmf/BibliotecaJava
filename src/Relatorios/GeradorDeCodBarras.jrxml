@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" columnCount="3" pageWidth="595" pageHeight="841" columnWidth="180" columnSpacing="13" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" uuid="1aefab2b-57d0-46ae-a597-d67cbb939567">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select l.id, t.titulo from livro l 
+inner join titulo t on l.titulo_id = t.id]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="titulo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="73">
+			<rectangle>
+				<reportElement x="0" y="0" width="179" height="67" uuid="093e8da5-b135-43a1-b2f8-9912e356cfab"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="38" width="179" height="29" uuid="64b403e1-b63a-4c30-91f2-58dcc6d337d0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="0" width="179" height="38" uuid="54ce9094-94b6-4e28-bb76-2dd08daa8d7f"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$F{id}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

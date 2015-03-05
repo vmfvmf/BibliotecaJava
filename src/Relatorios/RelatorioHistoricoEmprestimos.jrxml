@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3cdb132-6d3d-4d0c-a272-86fd1929d048">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0FFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="AlunosMaisLeitores" uuid="9f1b392d-7a59-47e2-814c-4e8db0364826">
+		<queryString language="SQL">
+			<![CDATA[select u.nome as "Nome", u.serie as "Série",count(*) as "Livros Emprestados" from usuario u 
+
+inner join emprestimo e on u.id = e.usuario_id
+inner join emprestimo_livros el on e.id = el.emprestimo_id
+
+where u.tipo = "Aluno"
+
+group by e.id]]>
+		</queryString>
+		<field name="Nome" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="Série" class="java.lang.String"/>
+		<field name="Livros Emprestados" class="java.lang.Long"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[select e.id as "Cod", e.data as "Data", el.prazo_devolucao as "Prazo", el.data_devolucao as "Devolução", t.titulo as "Título" from emprestimo e 
+inner join emprestimo_livros el on e.id = el.emprestimo_id
+inner join livro l on l.id = el.livro_id
+inner join titulo t on t.id = l.titulo_id
+
+
+order by e.data desc]]>
+	</queryString>
+	<field name="Cod" class="java.lang.Integer"/>
+	<field name="Data" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Prazo" class="java.sql.Date"/>
+	<field name="Devolução" class="java.sql.Date"/>
+	<field name="Título" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#101717" backcolor="#101717" uuid="6f5a6de3-8901-47eb-b507-6b10772ccf11"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="20" forecolor="#F6EAEA" uuid="fa9ba921-e84c-417d-8db9-1c7984bd9d42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="0" width="71" height="20" forecolor="#F6EAEA" uuid="6f53b657-123e-4abe-80ae-62c27663f1f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="0" width="100" height="20" forecolor="#F6EAEA" uuid="f6e54d00-9930-40b0-86f6-103a1b76cbf3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="0" width="100" height="20" forecolor="#F6EAEA" uuid="2e9afa4d-d4b8-42a3-a488-69af418901a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Devolução]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="0" width="196" height="20" forecolor="#F6EAEA" uuid="1bcf3e78-a952-4bf4-acde-25e7ada0e779"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#DBE0E0" backcolor="#DCD7D7" uuid="fb9e4711-aec2-4510-8376-79ed97e0510e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="58" height="20" uuid="c32135fc-3859-4d94-9ad0-42147047136d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Cod}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="66" y="0" width="71" height="20" uuid="3c01dcf6-4aa1-4350-b4ca-497da650e395"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Data}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="149" y="0" width="100" height="20" uuid="dc4df739-f455-413d-be8b-fcb96a676c08"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Prazo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="259" y="0" width="100" height="20" uuid="dcd37abf-3dc1-4d5b-8f7c-069164dc358a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Devolução}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="359" y="0" width="196" height="20" uuid="30f478bd-38df-4790-853b-2be5a839296c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Título}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

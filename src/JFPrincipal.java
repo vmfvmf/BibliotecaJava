@@ -1,4 +1,16 @@
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import lib.jdb.connection.JDBConnection;
 
 /*
@@ -6,25 +18,35 @@ import lib.jdb.connection.JDBConnection;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author vmf
  */
 public class JFPrincipal extends javax.swing.JFrame {
 
+    JFileChooser jFileChooser1;
+
     /**
      * Creates new form JFPrincipal
      */
     public JFPrincipal() {
         initComponents();
-        jDBConnection1.connectDB();
-        jDBUpdate1.setJDBConnection(new JDBConnection());
-        jDBUpdate1.setSQL("call registra_pendencia()");
-        jDBUpdate1.execUpdate();
+        jFileChooser1 = new JFileChooser() {
+            /* @Override public void approveSelection(){
+             Process p;
+             switch (this.getApproveButtonText()) {
+             case "Salvar":
+             break;
+             default: JOptionPane.showMessageDialog(null, "aaa");
+             break;
+             }
+             }
+             */
+        };
     }
+
     public JFPrincipal(JDBConnection jdb) {
-        initComponents();
+        this();
         jDBConnection1 = jdb;
         jDBUpdate1.setJDBConnection(jDBConnection1);
         jDBUpdate1.setSQL("call registra_pendencia()");
@@ -45,6 +67,9 @@ public class JFPrincipal extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         jDBConnection1.setURL("jdbc:mysql://localhost/biblioteca");
         jDBConnection1.setDriver("com.mysql.jdbc.Driver");
@@ -75,6 +100,27 @@ public class JFPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Gerar Backup");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Restaurar Backup");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Gerador de Código de Barras");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,8 +130,11 @@ public class JFPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(302, Short.MAX_VALUE))
+                    .addComponent(jButton3)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5)
+                    .addComponent(jButton6))
+                .addContainerGap(366, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +145,13 @@ public class JFPrincipal extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton6)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,6 +171,58 @@ public class JFPrincipal extends javax.swing.JFrame {
         JFEmprestimos je = new JFEmprestimos(jDBConnection1);
         je.show();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        jFileChooser1.setSelectedFile(new File("backup.sql"));
+        if (JFileChooser.APPROVE_OPTION == jFileChooser1.showSaveDialog(this)) {
+            Process p;
+            try {
+                String cmd = "c:\\xampp\\mysql\\bin\\mysqldump -u root --triggers --add-drop-trigger -f --add-drop-database --databases biblioteca > "
+                        + jFileChooser1.getSelectedFile().getPath();
+                p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", cmd});
+                int p_complete = p.waitFor();
+                if (p_complete == 0) {
+                    JOptionPane.showMessageDialog(null, "Backup realizado com sucesso");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro na criação do backup");
+                }//"c:\\xampp\\mysql\\bin\\mysqldump -u root biblioteca ";
+
+                jFileChooser1.getParent().getParent().getParent().getParent().setVisible(false);
+            } catch (IOException ex) {
+                Logger.getLogger(JFPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JFPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int option = jFileChooser1.showOpenDialog(this);
+        if (JFileChooser.APPROVE_OPTION == option) {
+            Process p;
+            try {
+                String cmd = "c:\\xampp\\mysql\\bin\\mysql biblioteca -u root -e \"source "
+                        + jFileChooser1.getSelectedFile().getPath()+"\"";
+                p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", cmd});
+                int p_complete = p.waitFor();
+                if (p_complete == 0) {
+                    JOptionPane.showMessageDialog(null, "Backup realizado com sucesso");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro na recuperação");
+                }
+
+                jFileChooser1.getParent().getParent().getParent().getParent().setVisible(false);
+            } catch (IOException ex) {
+                Logger.getLogger(JFPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JFPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,6 +263,9 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private lib.jdb.connection.JDBConnection jDBConnection1;
     private lib.jdb.jdbupdate.JDBUpdate jDBUpdate1;
     // End of variables declaration//GEN-END:variables

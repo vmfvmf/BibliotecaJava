@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3cdb132-6d3d-4d0c-a272-86fd1929d048">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0FFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="AlunosMaisLeitores" uuid="9f1b392d-7a59-47e2-814c-4e8db0364826">
+		<queryString language="SQL">
+			<![CDATA[select u.nome as "Nome", u.serie as "Série",count(*) as "Livros Emprestados" from usuario u 
+
+inner join emprestimo e on u.id = e.usuario_id
+inner join emprestimo_livros el on e.id = el.emprestimo_id
+
+where u.tipo = "Aluno"
+
+group by e.id]]>
+		</queryString>
+		<field name="Nome" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="Série" class="java.lang.String"/>
+		<field name="Livros Emprestados" class="java.lang.Long"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[select t.titulo as "Título", au.autor as "Autor", a.assunto as "Assunto", count(*) as Emprestimos from titulo t
+
+inner join livro l on t.id = l.titulo_id
+inner join assunto a on a.id = t.assunto_id
+inner join autor au on au.id = t.autor_id
+inner join emprestimo_livros el on el.livro_id = l.id
+
+group by t.id
+
+order by Emprestimos desc]]>
+	</queryString>
+	<field name="Título" class="java.lang.String"/>
+	<field name="Autor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Assunto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Emprestimos" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#101717" backcolor="#101717" uuid="6f5a6de3-8901-47eb-b507-6b10772ccf11"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="198" height="20" forecolor="#E5DEDE" uuid="ecc60688-2fd2-4af3-ad53-57b19e923532"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="0" width="121" height="20" forecolor="#E5DEDE" uuid="1521a22d-6bf6-435d-8147-3dcd43e9453c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Autor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="319" y="0" width="141" height="20" forecolor="#E5DEDE" uuid="99b5b05f-599e-45ba-96b4-271531633721"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assunto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="95" height="20" forecolor="#E5DEDE" uuid="546c7a0a-75f6-4481-a1c4-3ec1ad960eec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emprestimos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#DBE0E0" backcolor="#DCD7D7" uuid="fb9e4711-aec2-4510-8376-79ed97e0510e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="2" width="198" height="20" uuid="65438c51-43e2-44bd-8eab-ff488b8fce79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Título}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="2" width="121" height="20" uuid="db6273d6-f7a5-4967-a33e-e7d0bf86853f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Autor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="319" y="2" width="141" height="20" uuid="06b3bbf0-ac5c-445b-b78a-919e0388990a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Assunto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="2" width="95" height="20" uuid="1391a94a-00b2-4225-9a21-eb187d505e31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Emprestimos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
