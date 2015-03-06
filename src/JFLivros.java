@@ -131,6 +131,7 @@ public class JFLivros extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         jDBQueryLivros.setSQL("select * from livro");
         jDBQueryLivros.setSaveManually(true);
@@ -188,6 +189,7 @@ public class JFLivros extends javax.swing.JFrame {
             }
         ));
         jDBTable1.setJDBQuery(jDBQueryLivros);
+        jDBTable1.setEditable(false);
         jDBTable1.setInvisibleFields("disponivel editora_id programa_id titulo_id baixa");
         jDBTable1.setjDBTableStyle(jDBTableStyle1);
         jScrollPane1.setViewportView(jDBTable1);
@@ -269,6 +271,7 @@ public class JFLivros extends javax.swing.JFrame {
         });
 
         jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
+        jDBButtonDelete1.setJDBQuery(jDBQueryLivros);
 
         jDBTextFieldIdTitulo.setJDBQuery(jDBQueryLivros);
         jDBTextFieldIdTitulo.setFieldName("titulo_id");
@@ -381,7 +384,7 @@ public class JFLivros extends javax.swing.JFrame {
 
         jMenu4.setText("Assistente de geração de Código de Barras");
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Adicionar a Seleção");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -389,6 +392,14 @@ public class JFLivros extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem5);
+
+        jMenuItem6.setText("Limpar Lista");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem6);
 
         jMenu3.add(jMenu4);
 
@@ -788,13 +799,17 @@ public class JFLivros extends javax.swing.JFrame {
             ja = new JFAssistenteCodBarras(this);
             ja.setLocation((int)this.getSize().getWidth()+10, 0);
         }
-        ja.addCod(jDBQueryLivros.getCurrentFieldValue("id"),jDBTextFieldTitulo.getText());
+        ja.addCod(jDBQueryLivros.getCurrentFieldValue("id")+"- "+jDBTextFieldTitulo.getText());
         ja.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         if(ja!=null)ja.dispose();
     }//GEN-LAST:event_formWindowClosed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        if(ja!=null) ja.limparLista();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -829,6 +844,10 @@ public class JFLivros extends javax.swing.JFrame {
                 new JFLivros().setVisible(true);
             }
         });
+    }
+    
+    public JDBConnection getJDBConnection(){
+        return jDBQueryLivros.getJDBConnection();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -885,6 +904,7 @@ public class JFLivros extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItemAssuntosLidos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;

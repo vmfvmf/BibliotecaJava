@@ -1,5 +1,12 @@
 
+import java.sql.ResultSet;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import lib.jdb.control.jdblist.JDBList;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,7 +19,7 @@ import javax.swing.DefaultListModel;
  * @author vmf
  */
 public class JFAssistenteCodBarras extends javax.swing.JFrame {
-    DefaultListModel listModelIDs,listModelTitulos;
+    DefaultListModel listModelIDs;
     /**
      * Creates new form JFAssistenteCodBarras
      */
@@ -20,9 +27,7 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
     public JFAssistenteCodBarras() {
         initComponents();
         listModelIDs = new DefaultListModel();
-        listModelTitulos = new DefaultListModel();
         jListTombos.setModel(listModelIDs);
-        jListTitulos.setModel(listModelTitulos);
     }
 
     JFAssistenteCodBarras(JFLivros parent) {
@@ -41,8 +46,9 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jListTombos = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jListTitulos = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tombos Selecionados");
@@ -50,32 +56,85 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
         jListTombos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jListTombos);
 
-        jListTitulos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(jListTitulos);
+        jLabel1.setText("Total selecionados 0");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
+        jButton1.setText("Remover");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Gerar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(50, 50, 50)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton1))
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(jListTombos.getSelectedIndex()>=0){
+            listModelIDs.remove(jListTombos.getSelectedIndex());
+            atualizaLabel();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Conexao con;
+        String ids = "";
+        for(int i = 0;i<jListTombos.getModel().getSize();i++){
+            ids += jListTombos.getModel().getElementAt(i).toString().split("-")[0]+",";
+        }
+        ids+="0";
+        ResultSet rs;
+        con = new Conexao(jl.getJDBConnection().getConnection());
+        try{
+            con.Preparar("select l.id, t.titulo from livro l " +
+                    " inner join titulo t on l.titulo_id = t.id "
+                    + "where l.id in("+ids+")");
+            rs = con.RetornaDados(new Object[]{});
+            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/GeradorDeCodBarras.jasper", null, 
+                    new JRResultSetDataSource(rs));
+             JasperViewer.viewReport(jp,false);
+        }
+        catch(Exception e){ JOptionPane.showMessageDialog(null, e);}
+        limparLista();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -113,14 +172,27 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList jListTitulos;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jListTombos;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
-    void addCod(String id, String titulo) {
-        listModelIDs.addElement(id);        
-        listModelTitulos.addElement(titulo);                
+    void addCod(String  idtitulo) {
+        listModelIDs.addElement(idtitulo); 
+        atualizaLabel();
+    }
+
+    private void atualizaLabel() {
+        jLabel1.setText("Total selecionados:"+jListTombos.getModel().getSize());
+    }
+
+    public void limparLista() {
+        if(JOptionPane.showConfirmDialog(null, "Deseja limpar a lista?","Atenção",
+                JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE) 
+                == JOptionPane.YES_OPTION){
+            listModelIDs.clear();
+        }
     }
 }

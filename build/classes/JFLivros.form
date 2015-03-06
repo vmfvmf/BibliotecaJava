@@ -100,12 +100,20 @@
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
                   <Properties>
                     <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+A"/>
+                      <KeyStroke key="Ctrl+1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Adicionar a Sele&#xe7;&#xe3;o"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem5ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Limpar Lista"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem6ActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -433,6 +441,7 @@
             <Property name="JDBQuery" type="lib.jdb.jdbquery.JDBQuery" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="jDBQueryLivros"/>
             </Property>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="invisibleFields" type="java.lang.String" value="disponivel editora_id programa_id titulo_id baixa"/>
             <Property name="jDBTableStyle" type="lib.jdb.control.jdbtable.JDBTableStyle" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="jDBTableStyle1"/>
@@ -597,6 +606,9 @@
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/icones.png"/>
+        </Property>
+        <Property name="JDBQuery" type="lib.jdb.jdbquery.JDBQuery" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jDBQueryLivros"/>
         </Property>
       </Properties>
     </Component>
