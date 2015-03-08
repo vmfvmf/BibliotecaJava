@@ -122,9 +122,10 @@ public class JFLivros extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItemAssuntosLidos = new javax.swing.JMenuItem();
@@ -132,6 +133,8 @@ public class JFLivros extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         jDBQueryLivros.setSQL("select * from livro");
         jDBQueryLivros.setSaveManually(true);
@@ -338,7 +341,15 @@ public class JFLivros extends javax.swing.JFrame {
 
         jMenu1.setText("Pesquisar");
 
-        jMenuItem1.setText("Título");
+        jMenuItem7.setText("Livros por Autor");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem7);
+
+        jMenuItem1.setText("Livros por Título");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -346,17 +357,22 @@ public class JFLivros extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Editora");
-        jMenu1.add(jMenuItem2);
-
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Tombo");
+        jMenuItem3.setText("Livros por Tombo");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem2.setText("Livros por Programa");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -404,6 +420,18 @@ public class JFLivros extends javax.swing.JFrame {
         jMenu3.add(jMenu4);
 
         jMenuBar1.add(jMenu3);
+
+        jMenu5.setText("Empréstimo");
+
+        jMenuItem8.setText("Registrar Devolução");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem8);
+
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -754,7 +782,7 @@ public class JFLivros extends javax.swing.JFrame {
                 " group by t.id " +
                 " order by Emprestimos desc limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioLivrosEmprestadissimos.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioLivrosEmprestadissimos.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
@@ -773,7 +801,7 @@ public class JFLivros extends javax.swing.JFrame {
                 " group by a.id " +
                 " order by a.assunto asc limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioAssuntosMaisLidos.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioAssuntosMaisLidos.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
@@ -810,6 +838,27 @@ public class JFLivros extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         if(ja!=null) ja.limparLista();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        jDBQueryLivros.setSQL(qryLivros+" and id in( "+
+                "select li.id from livro li inner join titulo t on t.id = li.titulo_id "
+                + " inner join autor a on t.autor_id = a.id "
+                + " where a.autor like \"%"+JOptionPane.showInputDialog("Digite o nome do Autor")+"%\""
+                +")");
+        jDBQueryLivros.execQuery();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        jDBQueryLivros.setSQL(qryLivros+" and programa_id in( "+
+                "select id from programa "
+                + " where programa like \"%"+JOptionPane.showInputDialog("Digite o Programa")+"%\""
+                +")");
+        jDBQueryLivros.execQuery();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -898,6 +947,7 @@ public class JFLivros extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -905,6 +955,8 @@ public class JFLivros extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItemAssuntosLidos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;

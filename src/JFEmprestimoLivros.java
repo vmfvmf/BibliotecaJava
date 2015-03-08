@@ -25,7 +25,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     public JFEmprestimoLivros() {
         initComponents();
         jDBTable2.setFieldsTitle("id", "Código");
-        jDBTable2.setFieldsTitle("livro_id", "Cód. Livro");
+        jDBTable2.setFieldsTitle("livro_id", "Tombo");
         jDBTable2.setFieldsTitle("emprestimo_id", "Cód. Empréstimo");
         jDBTable2.setFieldsTitle("data_devolucao", "Data da Devolução");
         jDBTable2.setFieldsTitle("prazo_devolucao", "Prazo de Devolução");

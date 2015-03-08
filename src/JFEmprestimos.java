@@ -449,7 +449,7 @@ public class JFEmprestimos extends javax.swing.JFrame {
             " where u.tipo = \"Aluno\" group by u.id " +
             " order by u.serie,Emprestimos desc limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioAlunosMaisLeitoresPorSala.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioAlunosMaisLeitoresPorSala.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
@@ -467,7 +467,7 @@ public class JFEmprestimos extends javax.swing.JFrame {
             " where u.tipo = \"Professor\" group by u.id " +
             " order by Emprestimos desc limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioProfessoresMaisLeitores.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioProfessoresMaisLeitores.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
@@ -485,7 +485,7 @@ public class JFEmprestimos extends javax.swing.JFrame {
             " where u.tipo = \"Funcionario\" group by u.id " +
             " order by Emprestimos desc limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioFuncionariosMaisLeitores.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioFuncionariosMaisLeitores.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }

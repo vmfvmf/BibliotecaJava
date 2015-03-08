@@ -3,6 +3,8 @@ import lib.jdb.connection.JDBConnection;
 
 public class Principal {
 
+    //public static String relPath="c:\\Program Files (x86)\\Biblioteca\\Relatorios\\";
+    public static String relPath="src/Relatorios/";
     /**
      * @param args the command line arguments
      */

@@ -462,7 +462,7 @@ public class JFUsuario extends javax.swing.JFrame {
                 " inner join titulo t on t.id = l.titulo_id where e.usuario_id="+jDBQueryUsuario.getCurrentFieldValue("id")+
                 " order by e.data desc ");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioHistoricoEmprestimos.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioHistoricoEmprestimos.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }

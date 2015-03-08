@@ -13,6 +13,7 @@ import lib.jdb.connection.JDBConnection;
  */
 public class JFAutor extends javax.swing.JFrame {
     boolean selecionar = false;
+    JFAuxiliar ja = null;
     /**
      * Creates new form JFAluno
      */
@@ -62,14 +63,29 @@ public class JFAutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Autores");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jDBButtonFirst1.setJDBQuery(jDBQueryAutor);
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryAutor);
 
         jDBButtonNew1.setJDBQuery(jDBQueryAutor);
+        jDBButtonNew1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDBButtonNew1ActionPerformed(evt);
+            }
+        });
 
         jDBButtonSave1.setJDBQuery(jDBQueryAutor);
+        jDBButtonSave1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDBButtonSave1ActionPerformed(evt);
+            }
+        });
 
         jDBButtonCancel1.setJDBQuery(jDBQueryAutor);
 
@@ -80,6 +96,11 @@ public class JFAutor extends javax.swing.JFrame {
         jDBTextField1.setJDBQuery(jDBQueryAutor);
         jDBTextField1.setFieldName("autor");
         jDBTextField1.setjDBControlStyle(jDBControlStyle1);
+        jDBTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDBTextField1KeyReleased(evt);
+            }
+        });
 
         jLabel1.setText("Autor");
 
@@ -200,6 +221,31 @@ public class JFAutor extends javax.swing.JFrame {
         selecionar=true;
         this.dispose();
     }//GEN-LAST:event_jButtonSelecionarActionPerformed
+
+    private void jDBButtonNew1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonNew1ActionPerformed
+        if(ja==null){ 
+            ja = new JFAuxiliar(jDBQueryAutor.getJDBConnection());
+            ja.setLocation(this.getWidth()+10, 0);
+            ja.getJDBTable().setFieldsTitle("autor","Autor");
+        }
+        ja.setVisible(true);
+    }//GEN-LAST:event_jDBButtonNew1ActionPerformed
+
+    private void jDBTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextField1KeyReleased
+        if(ja.isVisible()){
+            ja.getJQry().setSQL("select a.autor from autor a where a.autor like \"%"+
+                    jDBTextField1.getText()+"%\"");
+            ja.getJQry().execQuery();
+        }
+    }//GEN-LAST:event_jDBTextField1KeyReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        if(ja!=null)ja.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void jDBButtonSave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonSave1ActionPerformed
+        if(ja!=null)ja.setVisible(false);
+    }//GEN-LAST:event_jDBButtonSave1ActionPerformed
 
     /**
      * @param args the command line arguments

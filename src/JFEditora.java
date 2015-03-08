@@ -13,6 +13,7 @@ import lib.jdb.connection.JDBConnection;
  */
 public class JFEditora extends javax.swing.JFrame {
     public boolean selecionar = false;
+    JFAuxiliar ja = null;
     /**
      * Creates new form JFAluno
      */
@@ -56,14 +57,29 @@ public class JFEditora extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editoras");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jDBButtonFirst1.setJDBQuery(jDBQueryEditora);
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryEditora);
 
         jDBButtonNew1.setJDBQuery(jDBQueryEditora);
+        jDBButtonNew1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDBButtonNew1ActionPerformed(evt);
+            }
+        });
 
         jDBButtonSave1.setJDBQuery(jDBQueryEditora);
+        jDBButtonSave1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDBButtonSave1ActionPerformed(evt);
+            }
+        });
 
         jDBButtonCancel1.setJDBQuery(jDBQueryEditora);
 
@@ -74,6 +90,11 @@ public class JFEditora extends javax.swing.JFrame {
         jDBTextField1.setJDBQuery(jDBQueryEditora);
         jDBTextField1.setFieldName("editora");
         jDBTextField1.setjDBControlStyle(jDBControlStyle1);
+        jDBTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDBTextField1KeyReleased(evt);
+            }
+        });
 
         jLabel1.setText("Editora");
 
@@ -190,6 +211,31 @@ public class JFEditora extends javax.swing.JFrame {
         selecionar=true;
         this.dispose();
     }//GEN-LAST:event_jButtonSelecionarActionPerformed
+
+    private void jDBButtonNew1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonNew1ActionPerformed
+        if(ja==null){ 
+            ja = new JFAuxiliar(jDBQueryEditora.getJDBConnection());
+            ja.setLocation(this.getWidth()+10, 0);
+            ja.getJDBTable().setFieldsTitle("editora","Editora");
+        }
+        ja.setVisible(true);
+    }//GEN-LAST:event_jDBButtonNew1ActionPerformed
+
+    private void jDBTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextField1KeyReleased
+        if(ja.isVisible()){
+            ja.getJQry().setSQL("select e.editora from editora e where e.editora like \"%"+
+                    jDBTextField1.getText()+"%\"");
+            ja.getJQry().execQuery();
+        }
+    }//GEN-LAST:event_jDBTextField1KeyReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        if(ja!=null)ja.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void jDBButtonSave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonSave1ActionPerformed
+        if(ja!=null)ja.setVisible(false);
+    }//GEN-LAST:event_jDBButtonSave1ActionPerformed
 
     /**
      * @param args the command line arguments

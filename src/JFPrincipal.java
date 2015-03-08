@@ -69,7 +69,6 @@ public class JFPrincipal extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
 
         jDBConnection1.setURL("jdbc:mysql://localhost/biblioteca");
         jDBConnection1.setDriver("com.mysql.jdbc.Driver");
@@ -114,13 +113,6 @@ public class JFPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Gerador de Código de Barras");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,9 +124,8 @@ public class JFPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addContainerGap(366, Short.MAX_VALUE))
+                    .addComponent(jButton5))
+                .addContainerGap(431, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +140,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         pack();
@@ -206,7 +195,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", cmd});
                 int p_complete = p.waitFor();
                 if (p_complete == 0) {
-                    JOptionPane.showMessageDialog(null, "Backup realizado com sucesso");
+                    JOptionPane.showMessageDialog(null, "Backup restaurado com sucesso");
                 }else{
                     JOptionPane.showMessageDialog(null, "Ocorreu um erro na recuperação");
                 }
@@ -219,10 +208,6 @@ public class JFPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,7 +250,6 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private lib.jdb.connection.JDBConnection jDBConnection1;
     private lib.jdb.jdbupdate.JDBUpdate jDBUpdate1;
     // End of variables declaration//GEN-END:variables

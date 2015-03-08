@@ -128,7 +128,7 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
                     " inner join titulo t on l.titulo_id = t.id "
                     + "where l.id in("+ids+")");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/GeradorDeCodBarras.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"GeradorDeCodBarras.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
