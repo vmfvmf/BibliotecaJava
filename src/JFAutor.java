@@ -19,6 +19,9 @@ public class JFAutor extends javax.swing.JFrame {
      */
     public JFAutor() {
         initComponents();
+        jDBTable1.setFieldsTitle("id", "Código");
+        jDBTable1.setFieldsTitle("autor", "Autor");
+        CustomTable.setDefaulttable(jDBTable1);
     }
     public JFAutor(JDBConnection jdb) {
         this();
@@ -113,6 +116,7 @@ public class JFAutor extends javax.swing.JFrame {
             }
         ));
         jDBTable1.setJDBQuery(jDBQueryAutor);
+        jDBTable1.setEditable(false);
         jScrollPane1.setViewportView(jDBTable1);
 
         jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N

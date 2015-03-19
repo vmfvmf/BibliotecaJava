@@ -20,17 +20,22 @@ import net.sf.jasperreports.view.JasperViewer;
 public class JFUsuario extends javax.swing.JFrame {
     public boolean selecionar = false;
     public final String qryUsuario = "select * from usuario where ativo = 1 ", orderby = " order by nome ";
+    JFEmprestimos je=null;
+    JFEmprestimoLivros jel=null;
     /**
      * Creates new form JFAluno
      */
     public JFUsuario() {
         initComponents();
+        CustomTable.setDefaulttable(jDBTable1);
         jDBTable1.setFieldsTitle("nome", "Nome");
         jDBTable1.setFieldsTitle("id", "Cod.");
         jDBTable1.setFieldsTitle("rg", "RG");
         jDBTable1.setFieldsTitle("email", "E-Mail");
         jDBTable1.setFieldsTitle("celular", "Celular");
         jDBTable1.setFieldsTitle("telefone", "Telefone");
+        jDBTable1.setFieldsTitle("serie", "Série");
+        jDBTable1.setFieldsTitle("tipo", "Tipo");
     }
     public JFUsuario(JDBConnection jdb) {
         this();
@@ -96,9 +101,12 @@ public class JFUsuario extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         jDBQueryUsuario.setSQL("select * from usuario order by nome");
 
@@ -140,6 +148,7 @@ public class JFUsuario extends javax.swing.JFrame {
             }
         ));
         jDBTable1.setJDBQuery(jDBQueryUsuario);
+        jDBTable1.setEditable(false);
         jDBTable1.setInvisibleFields("num bairro rua pendencia ativo");
         jDBTable1.setjDBTableStyle(jDBTableStyle1);
         jScrollPane1.setViewportView(jDBTable1);
@@ -242,14 +251,6 @@ public class JFUsuario extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
         jMenu1.add(jSeparator1);
 
-        jMenuItem4.setText("Empréstimos");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem4);
-
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Relatórios");
@@ -263,6 +264,27 @@ public class JFUsuario extends javax.swing.JFrame {
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Empréstimos");
+
+        jMenuItem6.setText("Novo");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+        jMenu3.add(jSeparator3);
+
+        jMenuItem4.setText("Todos");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -469,6 +491,13 @@ public class JFUsuario extends javax.swing.JFrame {
         catch(Exception e){ JOptionPane.showMessageDialog(null, e);}
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        if(jel!=null)jel.dispose();
+        jel = new JFEmprestimoLivros(jDBQueryUsuario.getJDBConnection(),
+            jDBQueryUsuario.getCurrentFieldValueAsInteger("id"));
+        jel.show();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -542,15 +571,18 @@ public class JFUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     // End of variables declaration//GEN-END:variables
 
     public String getId(){

@@ -29,6 +29,7 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBTable1.setFieldsTitle("id", "Cod.");
         jDBTable1.setFieldsTitle("titulo", "Título");
         jDBTable1.setFieldsTitle("resenha", "Resenha");
+        CustomTable.setDefaulttable(jDBTable1);
     }
     public JFTitulos(JDBConnection jdb) {
         this();
@@ -135,6 +136,7 @@ public class JFTitulos extends javax.swing.JFrame {
             }
         ));
         jDBTable1.setJDBQuery(jDBQueryTitulos);
+        jDBTable1.setEditable(false);
         jDBTable1.setInvisibleFields("assunto_id autor_id");
         jDBTable1.setjDBTableStyle(jDBTableStyle1);
         jScrollPane1.setViewportView(jDBTable1);
@@ -404,6 +406,9 @@ public class JFTitulos extends javax.swing.JFrame {
         if(jDBTextFieldAutorId.getText().matches("\\d")){
             jDBQueryAutor.setSQL(qryAutor+" where id ="+jDBTextFieldAutorId.getText());
             jDBQueryAutor.execQuery();
+        }else{
+            jDBQueryAssunto.setSQL(qryAssunto+" where id = 0");
+            jDBQueryAssunto.execQuery();
         }
     }//GEN-LAST:event_jDBTextFieldAutorIdKeyReleased
 
@@ -411,7 +416,10 @@ public class JFTitulos extends javax.swing.JFrame {
         if(jDBTextFieldAssuntoId.getText().matches("\\d")){
             jDBQueryAssunto.setSQL(qryAssunto+" where id ="+jDBTextFieldAssuntoId.getText());
             jDBQueryAssunto.execQuery();
-        }
+        }else{
+            jDBQueryAssunto.setSQL(qryAssunto+" where id = 0");
+            jDBQueryAssunto.execQuery();
+        }            
     }//GEN-LAST:event_jDBTextFieldAssuntoIdKeyReleased
 
     private void jDBQueryTitulosOnSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {//GEN-FIRST:event_jDBQueryTitulosOnSaveManually

@@ -27,6 +27,7 @@ public class JFEmprestimos extends javax.swing.JFrame {
      */
     public JFEmprestimos() {
         initComponents();
+        CustomTable.setDefaulttable(jDBTable2);
         jDBTable2.setFieldsTitle("id", "Código");
         jDBTable2.setFieldsTitle("data", "Data");
         jDBTable2.setFieldsTitle("usuario_id", "Cód. Usuário");
@@ -90,7 +91,6 @@ public class JFEmprestimos extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItemTopProfsEmp = new javax.swing.JMenuItem();
         jMenuItemTopFuncEmps = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
 
         jDBQueryUsuario.setSQL("select * from usuario");
 
@@ -247,9 +247,6 @@ public class JFEmprestimos extends javax.swing.JFrame {
         jMenu3.add(jMenuItemTopFuncEmps);
 
         jMenuBar2.add(jMenu3);
-
-        jMenu4.setText("Edit");
-        jMenuBar2.add(jMenu4);
 
         setJMenuBar(jMenuBar2);
 
@@ -414,8 +411,11 @@ public class JFEmprestimos extends javax.swing.JFrame {
     }//GEN-LAST:event_jDateChooser1PropertyChange
 
     private void jDBTextFieldIdUserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextFieldIdUserKeyReleased
-        if(jDBTextFieldIdUser.getText().matches("\\d")){
+        if(jDBTextFieldIdUser.getText().matches("\\d+")){
             jDBQueryUsuario.setSQL(qryUser+" where id ="+jDBTextFieldIdUser.getText());
+            jDBQueryUsuario.execQuery();
+        }else{
+            jDBQueryUsuario.setSQL(qryUser+" where id = 0");
             jDBQueryUsuario.execQuery();
         }
     }//GEN-LAST:event_jDBTextFieldIdUserKeyReleased
@@ -431,7 +431,7 @@ public class JFEmprestimos extends javax.swing.JFrame {
                 " where u.tipo = \"Aluno\" group by u.id " +
                 " order by Emprestimos desc,u.serie limit 10");
             rs = con.RetornaDados(new Object[]{});
-            JasperPrint jp = JasperFillManager.fillReport("src/Relatorios/RelatorioAlunosMaisLeitores.jasper", null, 
+            JasperPrint jp = JasperFillManager.fillReport(Principal.relPath+"RelatorioAlunosMaisLeitores.jasper", null, 
                     new JRResultSetDataSource(rs));
              JasperViewer.viewReport(jp,false);
         }
@@ -556,7 +556,6 @@ public class JFEmprestimos extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;

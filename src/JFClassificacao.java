@@ -18,9 +18,10 @@ public class JFClassificacao extends javax.swing.JFrame {
      */
     public JFClassificacao() {
         initComponents();
+        CustomTable.setDefaulttable(jDBTable1);
     }
     public JFClassificacao(JDBConnection jdb) {
-        initComponents();
+        this();
         jDBQueryClassificacao.setJDBConnection(jdb);
         jDBQueryClassificacao.execQuery();
     }

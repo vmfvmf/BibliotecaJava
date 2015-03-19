@@ -253,6 +253,7 @@
             <Property name="JDBQuery" type="lib.jdb.jdbquery.JDBQuery" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="jDBQueryTitulos"/>
             </Property>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="invisibleFields" type="java.lang.String" value="assunto_id autor_id"/>
             <Property name="jDBTableStyle" type="lib.jdb.control.jdbtable.JDBTableStyle" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="jDBTableStyle1"/>

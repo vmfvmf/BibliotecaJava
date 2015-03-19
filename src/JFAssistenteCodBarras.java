@@ -123,6 +123,7 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
         ids+="0";
         ResultSet rs;
         con = new Conexao(jl.getJDBConnection().getConnection());
+        JOptionPane.showMessageDialog(null, ids);
         try{
             con.Preparar("select l.id, t.titulo from livro l " +
                     " inner join titulo t on l.titulo_id = t.id "
@@ -193,6 +194,19 @@ public class JFAssistenteCodBarras extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE) 
                 == JOptionPane.YES_OPTION){
             listModelIDs.clear();
+            atualizaLabel();
         }
+        
     }
+
+    boolean checkIDNotOnList(String livroTombo) {
+        for(int i = 0;i<jListTombos.getModel().getSize();i++){
+            if(jListTombos.getModel().getElementAt(i).toString().split("-")[0].equals(livroTombo)){
+                jListTombos.setSelectedIndex(i);
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
