@@ -61,6 +61,11 @@ public class JFAssunto extends javax.swing.JFrame {
         jDBLookUpComboBox1 = new lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox();
 
         jDBQueryAssunto.setSQL("select * from assunto");
+        jDBQueryAssunto.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryAssuntoPropertyChange(evt);
+            }
+        });
 
         jDBQueryCatPrateleira.setSQL("select id, categoriaprateleira from categoria_prateleira");
 
@@ -68,8 +73,10 @@ public class JFAssunto extends javax.swing.JFrame {
         setTitle("Assuntos");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryAssunto);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryAssunto);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryAssunto);
 
@@ -78,8 +85,10 @@ public class JFAssunto extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryAssunto);
 
         jDBButtonNext1.setJDBQuery(jDBQueryAssunto);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryAssunto);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryAssunto);
         jDBTextField1.setFieldName("assunto");
@@ -178,10 +187,10 @@ public class JFAssunto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jDBButtonSave1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jDBButtonNew1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,6 +226,22 @@ public class JFAssunto extends javax.swing.JFrame {
         selecionar=true;
         this.dispose();
     }//GEN-LAST:event_jButtonSelecionarActionPerformed
+
+    private void jDBQueryAssuntoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryAssuntoPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryAssunto.isInserting()&&!jDBQueryAssunto.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryAssunto.isInserting()&&!jDBQueryAssunto.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryAssunto.isInserting()&&!jDBQueryAssunto.isEditing()&&
+                jDBQueryAssunto.getRow()<jDBQueryAssunto.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryAssunto.isInserting()&&
+                                !jDBQueryAssunto.isEditing()&&
+                jDBQueryAssunto.getRow()<jDBQueryAssunto.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryAssunto.isInserting()&&!jDBQueryAssunto.isEditing()&&
+                jDBQueryAssunto.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryAssunto.isInserting()&&!jDBQueryAssunto.isEditing()&&
+                jDBQueryAssunto.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryAssunto.isEditing() || jDBQueryAssunto.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryAssunto.isEditing() || jDBQueryAssunto.isInserting());
+    }//GEN-LAST:event_jDBQueryAssuntoPropertyChange
 
     /**
      * @param args the command line arguments

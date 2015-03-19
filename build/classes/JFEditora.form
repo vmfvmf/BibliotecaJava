@@ -6,6 +6,9 @@
       <Properties>
         <Property name="SQL" type="java.lang.String" value="select * from editora"/>
       </Properties>
+      <Events>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jDBQueryEditoraPropertyChange"/>
+      </Events>
     </Component>
     <Component class="lib.jdb.control.jdbcontrolstyle.JDBControlStyle" name="jDBControlStyle1">
     </Component>

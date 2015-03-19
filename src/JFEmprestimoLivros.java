@@ -1,12 +1,8 @@
 
-import com.toedter.calendar.JDateChooser;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import javafx.scene.input.KeyCode;
 import javax.swing.JOptionPane;
 import lib.jdb.connection.JDBConnection;
 
@@ -62,6 +58,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
 
     private void setPzDevDefault(){
         Calendar c = Calendar.getInstance();
+        c.setTime(jDBQueryEmprestimos.getCurrentFieldValueAsSQLDate("data"));
         c.add(Calendar.DAY_OF_MONTH, 7);
         jDBTextFieldPzDev.setText(c.getTime().toLocaleString().split(" ")[0]);
     }
@@ -112,6 +109,8 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBButtonLast1 = new lib.jdb.control.jdbbuttonlast.JDBButtonLast();
         jDBButtonPrevious1 = new lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious();
         jDBButtonDelete1 = new lib.jdb.control.jdbbuttondelete.JDBButtonDelete();
+        jLabelPosicao = new javax.swing.JLabel();
+        jDBLabelCount1 = new lib.jdb.control.jdblabelcount.JDBLabelCount();
 
         jDBQueryEmprestimos.setSQL("select * from emprestimo");
         jDBQueryEmprestimos.addScrollEventListener(new lib.jdb.jdbquery.event.ScrollEventListener() {
@@ -132,6 +131,18 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBQuerySlaveEmpLivros.setMasterKeyField("id");
         jDBQuerySlaveEmpLivros.setSaveManually(true);
         jDBQuerySlaveEmpLivros.setSlaveForeignKeyField("emprestimo_id");
+        jDBQuerySlaveEmpLivros.addInsertEventListener(new lib.jdb.jdbquery.event.InsertEventListener() {
+            public void beforeInsert(lib.jdb.jdbquery.event.InsertEventObject evt) {
+                jDBQuerySlaveEmpLivrosBeforeInsert(evt);
+            }
+            public void afterInsert(lib.jdb.jdbquery.event.InsertEventObject evt) {
+            }
+        });
+        jDBQuerySlaveEmpLivros.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQuerySlaveEmpLivrosPropertyChange(evt);
+            }
+        });
         jDBQuerySlaveEmpLivros.addSaveEventListener(new lib.jdb.jdbquery.event.SaveEventListener() {
             public void beforeSave(lib.jdb.jdbquery.event.SaveEventObject evt) {
             }
@@ -297,8 +308,10 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBButtonSave1.setJDBQuery(jDBQuerySlaveEmpLivros);
 
         jDBButtonNext1.setJDBQuery(jDBQuerySlaveEmpLivros);
+        jDBButtonNext1.setText("");
 
         jDBButtonFirst1.setJDBQuery(jDBQuerySlaveEmpLivros);
+        jDBButtonFirst1.setText("");
 
         jDBButtonCancel1.setJDBQuery(jDBQuerySlaveEmpLivros);
         jDBButtonCancel1.addActionListener(new java.awt.event.ActionListener() {
@@ -323,11 +336,17 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         });
 
         jDBButtonLast1.setJDBQuery(jDBQuerySlaveEmpLivros);
+        jDBButtonLast1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQuerySlaveEmpLivros);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
         jDBButtonDelete1.setJDBQuery(jDBQuerySlaveEmpLivros);
+
+        jLabelPosicao.setText("Posição: 0 / ");
+
+        jDBLabelCount1.setjDBQuery(jDBQuerySlaveEmpLivros);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -335,7 +354,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -343,20 +362,25 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabelPosicao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(12, 12, 12)
+                        .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,20 +388,24 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDBButtonLast1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelPosicao))))
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -465,6 +493,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     private void jDBQuerySlaveEmpLivrosAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosAfterScroll
         jDBQueryLivro.setSQL(qryLivro+" where l.id = "+jDBQuerySlaveEmpLivros.getCurrentFieldValue("livro_id"));
                     jDBQueryLivro.execQuery();
+                    jLabelPosicao.setText("Posição: "+Integer.toString(jDBQuerySlaveEmpLivros.getRow())+" / ");
     }//GEN-LAST:event_jDBQuerySlaveEmpLivrosAfterScroll
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -533,9 +562,8 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSelUsuario1ActionPerformed
 
     private void jDBQuerySlaveEmpLivrosOnSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosOnSaveManually
-        if(jDBTextFieldPzDev.getText().isEmpty()){
-            setPzDevDefault();
-        }
+        jDBQuerySlaveEmpLivros.setNewCurrentFieldValue("prazo_devolucao", 
+                jDBTextFieldPzDev.getText());
             
         jDBQuerySlaveEmpLivros.save();
     }//GEN-LAST:event_jDBQuerySlaveEmpLivrosOnSaveManually
@@ -544,6 +572,26 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
         jDBQuerySlaveEmpLivros.insert();
         jDBTextFieldIdLivro.requestFocus();
     }//GEN-LAST:event_jDBQuerySlaveEmpLivrosAfterSave
+
+    private void jDBQuerySlaveEmpLivrosBeforeInsert(lib.jdb.jdbquery.event.InsertEventObject evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosBeforeInsert
+        setPzDevDefault();
+    }//GEN-LAST:event_jDBQuerySlaveEmpLivrosBeforeInsert
+
+    private void jDBQuerySlaveEmpLivrosPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQuerySlaveEmpLivrosPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&!jDBQuerySlaveEmpLivros.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&!jDBQuerySlaveEmpLivros.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&!jDBQuerySlaveEmpLivros.isEditing()&&
+                jDBQuerySlaveEmpLivros.getRow()<jDBQuerySlaveEmpLivros.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&
+                                !jDBQuerySlaveEmpLivros.isEditing()&&
+                jDBQuerySlaveEmpLivros.getRow()<jDBQuerySlaveEmpLivros.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&!jDBQuerySlaveEmpLivros.isEditing()&&
+                jDBQuerySlaveEmpLivros.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQuerySlaveEmpLivros.isInserting()&&!jDBQuerySlaveEmpLivros.isEditing()&&
+                jDBQuerySlaveEmpLivros.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQuerySlaveEmpLivros.isEditing() || jDBQuerySlaveEmpLivros.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQuerySlaveEmpLivros.isEditing() || jDBQuerySlaveEmpLivros.isInserting());
+    }//GEN-LAST:event_jDBQuerySlaveEmpLivrosPropertyChange
 
     /**
      * @param args the command line arguments
@@ -592,6 +640,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     private lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious jDBButtonPrevious1;
     private lib.jdb.control.jdbbuttonsave.JDBButtonSave jDBButtonSave1;
     private lib.jdb.control.jdbcontrolstyle.JDBControlStyle jDBControlStyle1;
+    private lib.jdb.control.jdblabelcount.JDBLabelCount jDBLabelCount1;
     private lib.jdb.jdbquery.JDBQuery jDBQueryEmprestimos;
     private lib.jdb.jdbquery.JDBQuery jDBQueryLivro;
     private lib.jdb.jdbquery.JDBQuerySlave jDBQuerySlaveEmpLivros;
@@ -615,6 +664,7 @@ public class JFEmprestimoLivros extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelPosicao;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;

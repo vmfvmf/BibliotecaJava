@@ -2,7 +2,9 @@
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lib.jdb.connection.JDBConnection;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -41,7 +43,7 @@ public class JFLivros extends javax.swing.JFrame {
         jDBTable1.setFieldsTitle("isbn", "ISBN");
         jDBTable1.setFieldsTitle("data_aquisicao", "Data Aquisição");
         jDBTable1.setFieldsTitle("id", "Tombo");
-        jButtonevolver.setVisible(false);
+        jButtonevolver.setEnabled(false);
     }
     public JFLivros(JDBConnection jdb) {
         this();
@@ -54,7 +56,8 @@ public class JFLivros extends javax.swing.JFrame {
         jDBQueryEditora.execQuery();
         jDBQueryLivros.execQuery();
         jDBQueryTitulo.execQuery();
-        jButtonSelecionar.setVisible(false);
+        jButtonSelecionar.setEnabled(false);
+        jDBUpdateTransaction1.setJDBConnection(jdb);
     }
     
     public JFLivros(JDBConnection jdb, boolean selecionar) {
@@ -63,11 +66,13 @@ public class JFLivros extends javax.swing.JFrame {
         jDBQueryEditora.setJDBConnection(jdb);
         jDBQueryTitulo.setJDBConnection(jdb);
         jDBQueryPrograma.setJDBConnection(jdb);
+        jDBQueryPrateleira.setJDBConnection(jdb);
         jDBQueryPrograma.execQuery();
         jDBQueryEditora.execQuery();
         jDBQueryTitulo.execQuery();
         jDBQueryLivros.setSQL(qryLivros+" and id = 0");
         jDBQueryLivros.execQuery();
+        jDBUpdateTransaction1.setJDBConnection(jdb);
     }
 
     /**
@@ -86,6 +91,7 @@ public class JFLivros extends javax.swing.JFrame {
         jDBQueryPrograma = new lib.jdb.jdbquery.JDBQuery();
         jDBTableStyle1 = new lib.jdb.control.jdbtable.JDBTableStyle();
         jDBQueryPrateleira = new lib.jdb.jdbquery.JDBQuery();
+        jDBUpdateTransaction1 = new lib.jdb.jdbupdatetransaction.JDBUpdateTransaction();
         jDBButtonNew1 = new lib.jdb.control.jdbbuttonnew.JDBButtonNew();
         jDBButtonSave1 = new lib.jdb.control.jdbbuttonsave.JDBButtonSave();
         jDBButtonCancel1 = new lib.jdb.control.jdbbuttoncancel.JDBButtonCancel();
@@ -128,6 +134,8 @@ public class JFLivros extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jDBLookUpComboBox1 = new lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox();
         jButtonevolver = new javax.swing.JButton();
+        jDBLabelCount1 = new lib.jdb.control.jdblabelcount.JDBLabelCount();
+        jLabelPosicao = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -141,11 +149,14 @@ public class JFLivros extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
 
         jDBQueryLivros.setSQL("select * from livro");
         jDBQueryLivros.setSaveManually(true);
+        jDBQueryLivros.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryLivrosPropertyChange(evt);
+            }
+        });
         jDBQueryLivros.addSaveManuallyEventListener(new lib.jdb.jdbquery.event.SaveManuallyEventListener() {
             public void onSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {
                 jDBQueryLivrosOnSaveManually(evt);
@@ -195,8 +206,10 @@ public class JFLivros extends javax.swing.JFrame {
         });
 
         jDBButtonSave1.setJDBQuery(jDBQueryLivros);
+        jDBButtonSave1.setEnabled(false);
 
         jDBButtonCancel1.setJDBQuery(jDBQueryLivros);
+        jDBButtonCancel1.setEnabled(false);
 
         jLabel1.setText("Código / Título");
 
@@ -307,12 +320,16 @@ public class JFLivros extends javax.swing.JFrame {
         jDBTextFieldTitulo.setFieldName("titulo");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryLivros);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryLivros);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNext1.setJDBQuery(jDBQueryLivros);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryLivros);
+        jDBButtonLast1.setText("");
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -365,13 +382,18 @@ public class JFLivros extends javax.swing.JFrame {
         jDBLookUpComboBox1.setKeyField("prateleira_id");
         jDBLookUpComboBox1.setKeyListField("id");
 
-        jButtonevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
+        jButtonevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/return.png"))); // NOI18N
         jButtonevolver.setText("Devolver");
         jButtonevolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonevolverActionPerformed(evt);
             }
         });
+
+        jDBLabelCount1.setjDBQuery(jDBQueryLivros);
+        jDBLabelCount1.setText("wewer");
+
+        jLabelPosicao.setText("Posição: 0 / ");
 
         jMenu1.setText("Pesquisar");
 
@@ -455,18 +477,6 @@ public class JFLivros extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu5.setText("Empréstimo");
-
-        jMenuItem8.setText("Registrar Devolução");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItem8);
-
-        jMenuBar1.add(jMenu5);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -522,11 +532,8 @@ public class JFLivros extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11)
-                                    .addComponent(jDBLookUpComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(517, 517, 517)
-                                .addComponent(jButtonevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 207, Short.MAX_VALUE))
+                                    .addComponent(jDBLookUpComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 231, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
@@ -547,32 +554,38 @@ public class JFLivros extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel6)
                                             .addComponent(jDBTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jLabel8))
-                                .addGap(0, 273, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabelPosicao)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(62, 62, 62)
+                                                .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButtonSelecionar)
+                                                .addGap(17, 17, 17)
+                                                .addComponent(jButtonevolver))
+                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
@@ -582,28 +595,34 @@ public class JFLivros extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonSave1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDBButtonNew1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonevolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(42, 42, 42))))
-                .addGap(20, 20, 20)
+                            .addComponent(jButtonevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jButtonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jDBButtonSave1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jDBButtonNew1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelPosicao)
+                                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -652,12 +671,12 @@ public class JFLivros extends javax.swing.JFrame {
                     .addComponent(jDBComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jDBTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jDBLookUpComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel8)
                 .addGap(0, 0, 0)
                 .addComponent(jDBTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -755,10 +774,11 @@ public class JFLivros extends javax.swing.JFrame {
         jDBQueryPrograma.setSQL(qryPrograma+" where id ="+jDBQueryLivros.getCurrentFieldValue("programa_id"));
         jDBQueryPrograma.execQuery();
         if(!jDBQueryLivros.getCurrentFieldValueAsBoolean("disponivel")){
-            jButtonevolver.setVisible(true);
+            jButtonevolver.setEnabled(true);
         }else{
-            jButtonevolver.setVisible(false);
+            jButtonevolver.setEnabled(false);
         }
+        jLabelPosicao.setText("Posição: "+Integer.toString(jDBQueryLivros.getRow())+" / ");
     }//GEN-LAST:event_jDBQueryLivrosAfterScroll
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -917,10 +937,6 @@ public class JFLivros extends javax.swing.JFrame {
         jDBQueryLivros.execQuery();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
     private void jDBQueryTituloAfterExecQuery(lib.jdb.jdbquery.event.ExecQueryEventObject evt) {//GEN-FIRST:event_jDBQueryTituloAfterExecQuery
         jDBQueryPrateleira.setSQL(qryPrateleira+" where categoria_prateleira_id="+
                 jDBQueryTitulo.getCurrentFieldValue("categoriaprateleira_id"));
@@ -928,8 +944,39 @@ public class JFLivros extends javax.swing.JFrame {
     }//GEN-LAST:event_jDBQueryTituloAfterExecQuery
 
     private void jButtonevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonevolverActionPerformed
-        // TODO add your handling code here:
+        String id = jDBQueryLivros.getCurrentFieldValue("id"), msg;
+        jDBUpdateTransaction1.setSQL("update emprestimo_livros set data_devolucao = curdate() "
+                + " where livro_id = "+id+" and data_devolucao is null;");
+        try {
+            if(jDBUpdateTransaction1.execUpdate()){
+                jDBQueryLivros.execQuery();
+                jDBQueryLivros.locate(id, id, true);
+                msg = "Devolução registrada com sucesso!";
+            }else{
+                msg = "Ocorreu um erro durante o registro.";
+            }
+            JOptionPane.showMessageDialog(null,msg);
+        }catch (SQLException ex) {
+            Logger.getLogger(JFLivros.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonevolverActionPerformed
+
+    private void jDBQueryLivrosPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryLivrosPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryLivros.isInserting()&&!jDBQueryLivros.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryLivros.isInserting()&&!jDBQueryLivros.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryLivros.isInserting()&&!jDBQueryLivros.isEditing()&&
+                jDBQueryLivros.getRow()<jDBQueryLivros.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryLivros.isInserting()&&
+                                !jDBQueryLivros.isEditing()&&
+                jDBQueryLivros.getRow()<jDBQueryLivros.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryLivros.isInserting()&&!jDBQueryLivros.isEditing()&&
+                jDBQueryLivros.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryLivros.isInserting()&&!jDBQueryLivros.isEditing()&&
+                jDBQueryLivros.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryLivros.isEditing() || jDBQueryLivros.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryLivros.isEditing() || jDBQueryLivros.isInserting());
+        
+    }//GEN-LAST:event_jDBQueryLivrosPropertyChange
 
     /**
      * @param args the command line arguments
@@ -988,6 +1035,7 @@ public class JFLivros extends javax.swing.JFrame {
     private lib.jdb.control.jdbcheckbox.JDBCheckBox jDBCheckBox1;
     private lib.jdb.control.jdbcombobox.JDBComboBox jDBComboBox1;
     private lib.jdb.control.jdbcontrolstyle.JDBControlStyle jDBControlStyle1;
+    private lib.jdb.control.jdblabelcount.JDBLabelCount jDBLabelCount1;
     private lib.jdb.control.jdblookupcombobox.JDBLookUpComboBox jDBLookUpComboBox1;
     private lib.jdb.jdbquery.JDBQuery jDBQueryEditora;
     private lib.jdb.jdbquery.JDBQuery jDBQueryLivros;
@@ -1007,6 +1055,7 @@ public class JFLivros extends javax.swing.JFrame {
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldIdTitulo;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldPrograma;
     private lib.jdb.control.jdbtextfield.JDBTextField jDBTextFieldTitulo;
+    private lib.jdb.jdbupdatetransaction.JDBUpdateTransaction jDBUpdateTransaction1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1018,11 +1067,11 @@ public class JFLivros extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelPosicao;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -1031,7 +1080,6 @@ public class JFLivros extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItemAssuntosLidos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;

@@ -87,9 +87,16 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBTextFieldTitulo1 = new lib.jdb.control.jdbtextfield.JDBTextField();
         jDBTextFieldAssunto = new lib.jdb.control.jdbtextfield.JDBTextField();
         jDBTextFieldAssuntoId = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jLabelPosicao = new javax.swing.JLabel();
+        jDBLabelCount1 = new lib.jdb.control.jdblabelcount.JDBLabelCount();
 
         jDBQueryTitulos.setSQL("select * from titulo");
         jDBQueryTitulos.setSaveManually(true);
+        jDBQueryTitulos.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryTitulosPropertyChange(evt);
+            }
+        });
         jDBQueryTitulos.addSaveManuallyEventListener(new lib.jdb.jdbquery.event.SaveManuallyEventListener() {
             public void onSaveManually(lib.jdb.jdbquery.event.SaveManuallyEventObject evt) {
                 jDBQueryTitulosOnSaveManually(evt);
@@ -168,12 +175,16 @@ public class JFTitulos extends javax.swing.JFrame {
         });
 
         jDBButtonFirst2.setJDBQuery(jDBQueryTitulos);
+        jDBButtonFirst2.setText("");
 
         jDBButtonPrevious2.setJDBQuery(jDBQueryTitulos);
+        jDBButtonPrevious2.setText("");
 
         jDBButtonNext2.setJDBQuery(jDBQueryTitulos);
+        jDBButtonNext2.setText("");
 
         jDBButtonLast2.setJDBQuery(jDBQueryTitulos);
+        jDBButtonLast2.setText("");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
         jButton1.setText("Fechar");
@@ -220,6 +231,10 @@ public class JFTitulos extends javax.swing.JFrame {
             }
         });
 
+        jLabelPosicao.setText("Posição: 0 / ");
+
+        jDBLabelCount1.setjDBQuery(jDBQueryTitulos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -250,12 +265,16 @@ public class JFTitulos extends javax.swing.JFrame {
                                         .addComponent(jButtonSelAssunto))))
                             .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jDBButtonFirst2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jDBButtonPrevious2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(jLabelPosicao)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jDBButtonNext2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jDBButtonLast2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -293,14 +312,23 @@ public class JFTitulos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jDBButtonFirst2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonPrevious2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonNext2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDBButtonLast2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jDBButtonLast2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jDBButtonFirst2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jDBButtonPrevious2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jDBButtonNext2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelPosicao))))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButtonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,6 +428,7 @@ public class JFTitulos extends javax.swing.JFrame {
         jDBQueryAutor.execQuery();
         jDBQueryAssunto.setSQL(qryAssunto+" where id ="+jDBQueryTitulos.getCurrentFieldValue("assunto_id"));
         jDBQueryAssunto.execQuery();
+        jLabelPosicao.setText("Posição: "+Integer.toString(jDBQueryTitulos.getRow())+" / ");
     }//GEN-LAST:event_jDBQueryTitulosAfterScroll
 
     private void jDBTextFieldAutorIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDBTextFieldAutorIdKeyReleased
@@ -436,6 +465,23 @@ public class JFTitulos extends javax.swing.JFrame {
         if(msgError.isEmpty()) jDBQueryTitulos.save();
         else JOptionPane.showMessageDialog(null, msgError);
     }//GEN-LAST:event_jDBQueryTitulosOnSaveManually
+
+    private void jDBQueryTitulosPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryTitulosPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryTitulos.isInserting()&&!jDBQueryTitulos.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryTitulos.isInserting()&&!jDBQueryTitulos.isEditing());
+        jDBButtonNext2.setEnabled(!jDBQueryTitulos.isInserting()&&!jDBQueryTitulos.isEditing()&&
+                jDBQueryTitulos.getRow()<jDBQueryTitulos.getQueryQuantity());
+        jDBButtonLast2.setEnabled(!jDBQueryTitulos.isInserting()&&
+                                !jDBQueryTitulos.isEditing()&&
+                jDBQueryTitulos.getRow()<jDBQueryTitulos.getQueryQuantity());
+        jDBButtonPrevious2.setEnabled(!jDBQueryTitulos.isInserting()&&!jDBQueryTitulos.isEditing()&&
+                jDBQueryTitulos.getRow()>1);
+        jDBButtonFirst2.setEnabled(!jDBQueryTitulos.isInserting()&&!jDBQueryTitulos.isEditing()&&
+                jDBQueryTitulos.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryTitulos.isEditing() || jDBQueryTitulos.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryTitulos.isEditing() || jDBQueryTitulos.isInserting());
+        
+    }//GEN-LAST:event_jDBQueryTitulosPropertyChange
 
     /**
      * @param args the command line arguments
@@ -486,6 +532,7 @@ public class JFTitulos extends javax.swing.JFrame {
     private lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious jDBButtonPrevious2;
     private lib.jdb.control.jdbbuttonsave.JDBButtonSave jDBButtonSave1;
     private lib.jdb.control.jdbcontrolstyle.JDBControlStyle jDBControlStyle1;
+    private lib.jdb.control.jdblabelcount.JDBLabelCount jDBLabelCount1;
     private lib.jdb.control.jdblookupfield.JDBLookUpField jDBLookUpField1;
     private lib.jdb.jdbquery.JDBQuery jDBQueryAssunto;
     private lib.jdb.jdbquery.JDBQuery jDBQueryAutor;
@@ -502,6 +549,7 @@ public class JFTitulos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelPosicao;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables

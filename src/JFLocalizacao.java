@@ -57,8 +57,10 @@ public class JFLocalizacao extends javax.swing.JFrame {
         setTitle("Localizações");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryLocalizacao);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryLocalizacao);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryLocalizacao);
 
@@ -67,8 +69,10 @@ public class JFLocalizacao extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryLocalizacao);
 
         jDBButtonNext1.setJDBQuery(jDBQueryLocalizacao);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryLocalizacao);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryLocalizacao);
         jDBTextField1.setFieldName("localizacao");

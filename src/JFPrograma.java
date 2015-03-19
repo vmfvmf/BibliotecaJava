@@ -61,13 +61,20 @@ public class JFPrograma extends javax.swing.JFrame {
         jButtonSelecionar = new javax.swing.JButton();
 
         jDBQueryPrograma.setSQL("select * from programa");
+        jDBQueryPrograma.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryProgramaPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Programas");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryPrograma);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryPrograma);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryPrograma);
 
@@ -76,8 +83,10 @@ public class JFPrograma extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryPrograma);
 
         jDBButtonNext1.setJDBQuery(jDBQueryPrograma);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryPrograma);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryPrograma);
         jDBTextField1.setFieldName("programa");
@@ -202,6 +211,22 @@ public class JFPrograma extends javax.swing.JFrame {
         selecionar=true;
         this.dispose();
     }//GEN-LAST:event_jButtonSelecionarActionPerformed
+
+    private void jDBQueryProgramaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryProgramaPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryPrograma.isInserting()&&!jDBQueryPrograma.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryPrograma.isInserting()&&!jDBQueryPrograma.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryPrograma.isInserting()&&!jDBQueryPrograma.isEditing()&&
+                jDBQueryPrograma.getRow()<jDBQueryPrograma.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryPrograma.isInserting()&&
+                                !jDBQueryPrograma.isEditing()&&
+                jDBQueryPrograma.getRow()<jDBQueryPrograma.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryPrograma.isInserting()&&!jDBQueryPrograma.isEditing()&&
+                jDBQueryPrograma.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryPrograma.isInserting()&&!jDBQueryPrograma.isEditing()&&
+                jDBQueryPrograma.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryPrograma.isEditing() || jDBQueryPrograma.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryPrograma.isEditing() || jDBQueryPrograma.isInserting());
+    }//GEN-LAST:event_jDBQueryProgramaPropertyChange
 
     /**
      * @param args the command line arguments

@@ -53,13 +53,20 @@ public class JFClassificacao extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         jDBQueryClassificacao.setSQL("select * from classificacao");
+        jDBQueryClassificacao.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryClassificacaoPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Classificações");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryClassificacao);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryClassificacao);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryClassificacao);
 
@@ -68,8 +75,10 @@ public class JFClassificacao extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryClassificacao);
 
         jDBButtonNext1.setJDBQuery(jDBQueryClassificacao);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryClassificacao);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryClassificacao);
         jDBTextField1.setFieldName("classificacao");
@@ -135,7 +144,7 @@ public class JFClassificacao extends javax.swing.JFrame {
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(144, Short.MAX_VALUE))
+                        .addContainerGap(160, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jDBTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -174,6 +183,22 @@ public class JFClassificacao extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jDBQueryClassificacaoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryClassificacaoPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryClassificacao.isInserting()&&!jDBQueryClassificacao.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryClassificacao.isInserting()&&!jDBQueryClassificacao.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryClassificacao.isInserting()&&!jDBQueryClassificacao.isEditing()&&
+                jDBQueryClassificacao.getRow()<jDBQueryClassificacao.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryClassificacao.isInserting()&&
+                                !jDBQueryClassificacao.isEditing()&&
+                jDBQueryClassificacao.getRow()<jDBQueryClassificacao.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryClassificacao.isInserting()&&!jDBQueryClassificacao.isEditing()&&
+                jDBQueryClassificacao.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryClassificacao.isInserting()&&!jDBQueryClassificacao.isEditing()&&
+                jDBQueryClassificacao.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryClassificacao.isEditing() || jDBQueryClassificacao.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryClassificacao.isEditing() || jDBQueryClassificacao.isInserting());
+    }//GEN-LAST:event_jDBQueryClassificacaoPropertyChange
 
     /**
      * @param args the command line arguments

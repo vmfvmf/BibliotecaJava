@@ -63,6 +63,11 @@ public class JFAutor extends javax.swing.JFrame {
         jButtonSelecionar = new javax.swing.JButton();
 
         jDBQueryAutor.setSQL("select * from autor");
+        jDBQueryAutor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryAutorPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Autores");
@@ -73,8 +78,10 @@ public class JFAutor extends javax.swing.JFrame {
         });
 
         jDBButtonFirst1.setJDBQuery(jDBQueryAutor);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryAutor);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryAutor);
         jDBButtonNew1.addActionListener(new java.awt.event.ActionListener() {
@@ -93,8 +100,10 @@ public class JFAutor extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryAutor);
 
         jDBButtonNext1.setJDBQuery(jDBQueryAutor);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryAutor);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryAutor);
         jDBTextField1.setFieldName("autor");
@@ -177,7 +186,7 @@ public class JFAutor extends javax.swing.JFrame {
                                     .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jDBTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 111, Short.MAX_VALUE)))
+                        .addGap(0, 129, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -250,6 +259,22 @@ public class JFAutor extends javax.swing.JFrame {
     private void jDBButtonSave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonSave1ActionPerformed
         if(ja!=null)ja.setVisible(false);
     }//GEN-LAST:event_jDBButtonSave1ActionPerformed
+
+    private void jDBQueryAutorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryAutorPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryAutor.isInserting()&&!jDBQueryAutor.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryAutor.isInserting()&&!jDBQueryAutor.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryAutor.isInserting()&&!jDBQueryAutor.isEditing()&&
+                jDBQueryAutor.getRow()<jDBQueryAutor.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryAutor.isInserting()&&
+                                !jDBQueryAutor.isEditing()&&
+                jDBQueryAutor.getRow()<jDBQueryAutor.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryAutor.isInserting()&&!jDBQueryAutor.isEditing()&&
+                jDBQueryAutor.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryAutor.isInserting()&&!jDBQueryAutor.isEditing()&&
+                jDBQueryAutor.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryAutor.isEditing() || jDBQueryAutor.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryAutor.isEditing() || jDBQueryAutor.isInserting());
+    }//GEN-LAST:event_jDBQueryAutorPropertyChange
 
     /**
      * @param args the command line arguments

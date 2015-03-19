@@ -95,6 +95,8 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBComboBox1 = new lib.jdb.control.jdbcombobox.JDBComboBox();
         jLabel10 = new javax.swing.JLabel();
         jDBTextField9 = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jLabelPosicao = new javax.swing.JLabel();
+        jDBLabelCount1 = new lib.jdb.control.jdblabelcount.JDBLabelCount();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -109,13 +111,27 @@ public class JFUsuario extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         jDBQueryUsuario.setSQL("select * from usuario order by nome");
+        jDBQueryUsuario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryUsuarioPropertyChange(evt);
+            }
+        });
+        jDBQueryUsuario.addScrollEventListener(new lib.jdb.jdbquery.event.ScrollEventListener() {
+            public void beforeScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {
+            }
+            public void afterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {
+                jDBQueryUsuarioAfterScroll(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Usuários");
 
         jDBButtonFirst1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonFirst1.setText("");
 
         jDBButtonPrevious1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonPrevious1.setText("");
 
         jDBButtonNew1.setJDBQuery(jDBQueryUsuario);
 
@@ -124,8 +140,10 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBButtonCancel1.setJDBQuery(jDBQueryUsuario);
 
         jDBButtonNext1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonNext1.setText("");
 
         jDBButtonLast1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryUsuario);
         jDBTextField1.setFieldName("nome");
@@ -223,6 +241,10 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBTextField9.setJDBQuery(jDBQueryUsuario);
         jDBTextField9.setFieldName("serie");
         jDBTextField9.setjDBControlStyle(jDBControlStyle1);
+
+        jLabelPosicao.setText("Posição: 0 / ");
+
+        jDBLabelCount1.setjDBQuery(jDBQueryUsuario);
 
         jMenu1.setText("Pesquisar");
 
@@ -339,7 +361,7 @@ public class JFUsuario extends javax.swing.JFrame {
                                     .addComponent(jLabel5)
                                     .addComponent(jDBTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -352,7 +374,11 @@ public class JFUsuario extends javax.swing.JFrame {
                                         .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(jLabelPosicao)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -379,15 +405,20 @@ public class JFUsuario extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelPosicao)))))
                     .addComponent(jSeparator2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -498,6 +529,27 @@ public class JFUsuario extends javax.swing.JFrame {
         jel.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jDBQueryUsuarioAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQueryUsuarioAfterScroll
+        jLabelPosicao.setText("Posição: "+Integer.toString(jDBQueryUsuario.getRow())+" / ");
+    }//GEN-LAST:event_jDBQueryUsuarioAfterScroll
+
+    private void jDBQueryUsuarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryUsuarioPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryUsuario.isInserting()&&!jDBQueryUsuario.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryUsuario.isInserting()&&!jDBQueryUsuario.isEditing());
+        jDBButtonNext1.setEnabled(!jDBQueryUsuario.isInserting()&&!jDBQueryUsuario.isEditing()&&
+                jDBQueryUsuario.getRow()<jDBQueryUsuario.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryUsuario.isInserting()&&
+                                !jDBQueryUsuario.isEditing()&&
+                jDBQueryUsuario.getRow()<jDBQueryUsuario.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryUsuario.isInserting()&&!jDBQueryUsuario.isEditing()&&
+                jDBQueryUsuario.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryUsuario.isInserting()&&!jDBQueryUsuario.isEditing()&&
+                jDBQueryUsuario.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryUsuario.isEditing() || jDBQueryUsuario.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryUsuario.isEditing() || jDBQueryUsuario.isInserting());
+        
+    }//GEN-LAST:event_jDBQueryUsuarioPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -547,6 +599,7 @@ public class JFUsuario extends javax.swing.JFrame {
     private lib.jdb.control.jdbbuttonsave.JDBButtonSave jDBButtonSave1;
     private lib.jdb.control.jdbcombobox.JDBComboBox jDBComboBox1;
     private lib.jdb.control.jdbcontrolstyle.JDBControlStyle jDBControlStyle1;
+    private lib.jdb.control.jdblabelcount.JDBLabelCount jDBLabelCount1;
     private lib.jdb.jdbquery.JDBQuery jDBQueryUsuario;
     private lib.jdb.control.jdbtable.JDBTable jDBTable1;
     private lib.jdb.control.jdbtable.JDBTableStyle jDBTableStyle1;
@@ -569,6 +622,7 @@ public class JFUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelPosicao;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

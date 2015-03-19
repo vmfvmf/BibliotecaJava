@@ -55,6 +55,11 @@ public class JFEditora extends javax.swing.JFrame {
         jButtonSelecionar = new javax.swing.JButton();
 
         jDBQueryEditora.setSQL("select * from editora");
+        jDBQueryEditora.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDBQueryEditoraPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editoras");
@@ -238,6 +243,23 @@ public class JFEditora extends javax.swing.JFrame {
     private void jDBButtonSave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDBButtonSave1ActionPerformed
         if(ja!=null)ja.setVisible(false);
     }//GEN-LAST:event_jDBButtonSave1ActionPerformed
+
+    private void jDBQueryEditoraPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryEditoraPropertyChange
+        jDBButtonDelete1.setEnabled(!jDBQueryEditora.isInserting()&&!jDBQueryEditora.isEditing());
+        jDBButtonNew1.setEnabled(!jDBQueryEditora.isInserting()&&!jDBQueryEditora.isEditing());
+        
+        jDBButtonNext1.setEnabled(!jDBQueryEditora.isInserting()&&!jDBQueryEditora.isEditing()&&
+                jDBQueryEditora.getRow()<jDBQueryEditora.getQueryQuantity());
+        jDBButtonLast1.setEnabled(!jDBQueryEditora.isInserting()&&
+                                !jDBQueryEditora.isEditing()&&
+                jDBQueryEditora.getRow()<jDBQueryEditora.getQueryQuantity());
+        jDBButtonPrevious1.setEnabled(!jDBQueryEditora.isInserting()&&!jDBQueryEditora.isEditing()&&
+                jDBQueryEditora.getRow()>1);
+        jDBButtonFirst1.setEnabled(!jDBQueryEditora.isInserting()&&!jDBQueryEditora.isEditing()&&
+                jDBQueryEditora.getRow()>1);
+        jDBButtonSave1.setEnabled(jDBQueryEditora.isEditing() || jDBQueryEditora.isInserting());
+        jDBButtonCancel1.setEnabled(jDBQueryEditora.isEditing() || jDBQueryEditora.isInserting());
+    }//GEN-LAST:event_jDBQueryEditoraPropertyChange
 
     /**
      * @param args the command line arguments
