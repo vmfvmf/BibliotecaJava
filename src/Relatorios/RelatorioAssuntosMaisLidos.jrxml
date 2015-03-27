@@ -58,7 +58,12 @@ order by a.assunto asc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="60" splitType="Stretch"/>
+		<band height="104" splitType="Stretch">
+			<image scaleImage="RealHeight" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="555" height="104" uuid="0e97822e-b7dd-4580-8fd5-9709001ee5de"/>
+				<imageExpression><![CDATA["/home/vmf/NetBeansProjects/BibliotecaJava/src/Relatorios/cabecalho.jpg"]]></imageExpression>
+			</image>
+		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>

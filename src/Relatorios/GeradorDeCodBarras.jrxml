@@ -16,9 +16,12 @@ inner join titulo t on l.titulo_id = t.id]]>
 	<detail>
 		<band height="72">
 			<textField>
-				<reportElement x="0" y="38" width="171" height="34" uuid="64b403e1-b63a-4c30-91f2-58dcc6d337d0"/>
-				<textElement textAlignment="Left" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+				<reportElement x="0" y="38" width="185" height="34" uuid="64b403e1-b63a-4c30-91f2-58dcc6d337d0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titulo}+
+"\nEE Padre Arlindo Vieira"]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement x="0" y="0" width="185" height="38" uuid="54ce9094-94b6-4e28-bb76-2dd08daa8d7f"/>

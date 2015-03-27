@@ -62,13 +62,6 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBQueryUsuario = new lib.jdb.jdbquery.JDBQuery();
         jDBControlStyle1 = new lib.jdb.control.jdbcontrolstyle.JDBControlStyle();
         jDBTableStyle1 = new lib.jdb.control.jdbtable.JDBTableStyle();
-        jDBButtonFirst1 = new lib.jdb.control.jdbbuttonfirst.JDBButtonFirst();
-        jDBButtonPrevious1 = new lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious();
-        jDBButtonNew1 = new lib.jdb.control.jdbbuttonnew.JDBButtonNew();
-        jDBButtonSave1 = new lib.jdb.control.jdbbuttonsave.JDBButtonSave();
-        jDBButtonCancel1 = new lib.jdb.control.jdbbuttoncancel.JDBButtonCancel();
-        jDBButtonNext1 = new lib.jdb.control.jdbbuttonnext.JDBButtonNext();
-        jDBButtonLast1 = new lib.jdb.control.jdbbuttonlast.JDBButtonLast();
         jDBTextField1 = new lib.jdb.control.jdbtextfield.JDBTextField();
         jLabel1 = new javax.swing.JLabel();
         jDBTextField2 = new lib.jdb.control.jdbtextfield.JDBTextField();
@@ -87,28 +80,50 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBTextField7 = new lib.jdb.control.jdbtextfield.JDBTextField();
         jLabel8 = new javax.swing.JLabel();
         jDBTextField8 = new lib.jdb.control.jdbtextfield.JDBTextField();
-        jButtonSelecionar = new javax.swing.JButton();
-        jDBButtonDelete1 = new lib.jdb.control.jdbbuttondelete.JDBButtonDelete();
-        jSeparator2 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jDBComboBox1 = new lib.jdb.control.jdbcombobox.JDBComboBox();
         jLabel10 = new javax.swing.JLabel();
         jDBTextField9 = new lib.jdb.control.jdbtextfield.JDBTextField();
+        jToolBar1 = new javax.swing.JToolBar();
+        jDBButtonCancel1 = new lib.jdb.control.jdbbuttoncancel.JDBButtonCancel();
+        jDBButtonDelete1 = new lib.jdb.control.jdbbuttondelete.JDBButtonDelete();
+        jDBButtonSave1 = new lib.jdb.control.jdbbuttonsave.JDBButtonSave();
+        jDBButtonNew1 = new lib.jdb.control.jdbbuttonnew.JDBButtonNew();
+        jToolBar2 = new javax.swing.JToolBar();
+        jDBButtonFirst1 = new lib.jdb.control.jdbbuttonfirst.JDBButtonFirst();
+        jDBButtonPrevious1 = new lib.jdb.control.jdbbuttonprevious.JDBButtonPrevious();
         jLabelPosicao = new javax.swing.JLabel();
         jDBLabelCount1 = new lib.jdb.control.jdblabelcount.JDBLabelCount();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jDBButtonNext1 = new lib.jdb.control.jdbbuttonnext.JDBButtonNext();
+        jDBButtonLast1 = new lib.jdb.control.jdbbuttonlast.JDBButtonLast();
+        jToolBar3 = new javax.swing.JToolBar();
+        jButtonSelecionar = new javax.swing.JButton();
+        jButtonFechar = new javax.swing.JButton();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem22 = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem24 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
 
         jDBQueryUsuario.setSQL("select * from usuario order by nome");
         jDBQueryUsuario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -126,24 +141,6 @@ public class JFUsuario extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Usuários");
-
-        jDBButtonFirst1.setJDBQuery(jDBQueryUsuario);
-        jDBButtonFirst1.setText("");
-
-        jDBButtonPrevious1.setJDBQuery(jDBQueryUsuario);
-        jDBButtonPrevious1.setText("");
-
-        jDBButtonNew1.setJDBQuery(jDBQueryUsuario);
-
-        jDBButtonSave1.setJDBQuery(jDBQueryUsuario);
-
-        jDBButtonCancel1.setJDBQuery(jDBQueryUsuario);
-
-        jDBButtonNext1.setJDBQuery(jDBQueryUsuario);
-        jDBButtonNext1.setText("");
-
-        jDBButtonLast1.setJDBQuery(jDBQueryUsuario);
-        jDBButtonLast1.setText("");
 
         jDBTextField1.setJDBQuery(jDBQueryUsuario);
         jDBTextField1.setFieldName("nome");
@@ -207,27 +204,6 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBTextField8.setFieldName("celular");
         jDBTextField8.setjDBControlStyle(jDBControlStyle1);
 
-        jButtonSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/acpt.png"))); // NOI18N
-        jButtonSelecionar.setText("Selecionar");
-        jButtonSelecionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSelecionarActionPerformed(evt);
-            }
-        });
-
-        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones.png"))); // NOI18N
-        jDBButtonDelete1.setJDBQuery(jDBQueryUsuario);
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quit.png"))); // NOI18N
-        jButton1.setText("Fechar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jLabel9.setText("Tipo ");
 
         jDBComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aluno", "Professor", "Funcionário" }));
@@ -242,12 +218,175 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBTextField9.setFieldName("serie");
         jDBTextField9.setjDBControlStyle(jDBControlStyle1);
 
-        jLabelPosicao.setText("Posição: 0 / ");
+        jToolBar1.setRollover(true);
+
+        jDBButtonCancel1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonCancel1.setFocusable(false);
+        jDBButtonCancel1.setHorizontalTextPosition(0);
+        jDBButtonCancel1.setText("");
+        jDBButtonCancel1.setToolTipText("Cancelar");
+        jDBButtonCancel1.setVerticalTextPosition(3);
+        jToolBar1.add(jDBButtonCancel1);
+
+        jDBButtonDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/del.png"))); // NOI18N
+        jDBButtonDelete1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonDelete1.setFocusable(false);
+        jDBButtonDelete1.setHorizontalTextPosition(0);
+        jDBButtonDelete1.setText("");
+        jDBButtonDelete1.setToolTipText("Excluir");
+        jDBButtonDelete1.setVerticalTextPosition(3);
+        jToolBar1.add(jDBButtonDelete1);
+
+        jDBButtonSave1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonSave1.setFocusable(false);
+        jDBButtonSave1.setHorizontalTextPosition(0);
+        jDBButtonSave1.setText("");
+        jDBButtonSave1.setToolTipText("Salvar");
+        jDBButtonSave1.setVerticalTextPosition(3);
+        jToolBar1.add(jDBButtonSave1);
+
+        jDBButtonNew1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonNew1.setFocusable(false);
+        jDBButtonNew1.setHorizontalTextPosition(0);
+        jDBButtonNew1.setText("");
+        jDBButtonNew1.setToolTipText("Novo");
+        jDBButtonNew1.setVerticalTextPosition(3);
+        jToolBar1.add(jDBButtonNew1);
+
+        jToolBar2.setRollover(true);
+
+        jDBButtonFirst1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonFirst1.setFocusable(false);
+        jDBButtonFirst1.setHorizontalTextPosition(0);
+        jDBButtonFirst1.setText("");
+        jDBButtonFirst1.setVerticalTextPosition(3);
+        jToolBar2.add(jDBButtonFirst1);
+
+        jDBButtonPrevious1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonPrevious1.setFocusable(false);
+        jDBButtonPrevious1.setHorizontalTextPosition(0);
+        jDBButtonPrevious1.setText("");
+        jDBButtonPrevious1.setVerticalTextPosition(3);
+        jToolBar2.add(jDBButtonPrevious1);
+
+        jLabelPosicao.setText("0 / ");
+        jToolBar2.add(jLabelPosicao);
 
         jDBLabelCount1.setjDBQuery(jDBQueryUsuario);
+        jToolBar2.add(jDBLabelCount1);
 
+        jDBButtonNext1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonNext1.setFocusable(false);
+        jDBButtonNext1.setHorizontalTextPosition(0);
+        jDBButtonNext1.setText("");
+        jDBButtonNext1.setVerticalTextPosition(3);
+        jToolBar2.add(jDBButtonNext1);
+
+        jDBButtonLast1.setJDBQuery(jDBQueryUsuario);
+        jDBButtonLast1.setFocusable(false);
+        jDBButtonLast1.setHorizontalTextPosition(0);
+        jDBButtonLast1.setText("");
+        jDBButtonLast1.setVerticalTextPosition(3);
+        jToolBar2.add(jDBButtonLast1);
+
+        jToolBar3.setRollover(true);
+
+        jButtonSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/confirm.png"))); // NOI18N
+        jButtonSelecionar.setToolTipText("Ok");
+        jButtonSelecionar.setFocusable(false);
+        jButtonSelecionar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonSelecionar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonSelecionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelecionarActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(jButtonSelecionar);
+
+        jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cancel.png"))); // NOI18N
+        jButtonFechar.setToolTipText("Fechar");
+        jButtonFechar.setFocusable(false);
+        jButtonFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(jButtonFechar);
+
+        jMenu7.setMnemonic('a');
+        jMenu7.setText("Arquivo");
+
+        jMenuItem19.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem19.setMnemonic('n');
+        jMenuItem19.setText("Novo");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem19);
+
+        jMenuItem20.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem20.setMnemonic('e');
+        jMenuItem20.setText("Excluir");
+        jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem20ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem20);
+
+        jMenuItem21.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem21.setMnemonic('s');
+        jMenuItem21.setText("Salvar");
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem21);
+
+        jMenuItem22.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem22.setMnemonic('c');
+        jMenuItem22.setText("Cancelar");
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem22ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem22);
+        jMenu7.add(jSeparator5);
+
+        jMenuItem24.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem24.setMnemonic('o');
+        jMenuItem24.setText("Ok");
+        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem24ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem24);
+
+        jMenuItem25.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem25.setMnemonic('f');
+        jMenuItem25.setText("Fechar");
+        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem25ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem25);
+
+        jMenuBar2.add(jMenu7);
+
+        jMenu1.setMnemonic('p');
         jMenu1.setText("Pesquisar");
+        jMenu1.setToolTipText("");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setMnemonic('n');
         jMenuItem1.setText("Nome");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -256,7 +395,9 @@ public class JFUsuario extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("RG");
+        jMenuItem2.setToolTipText("r");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -264,7 +405,9 @@ public class JFUsuario extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("Código");
+        jMenuItem3.setToolTipText("c");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -273,7 +416,34 @@ public class JFUsuario extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
         jMenu1.add(jSeparator1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar2.add(jMenu1);
+
+        jMenu3.setMnemonic('e');
+        jMenu3.setText("Empréstimos");
+
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem6.setMnemonic('n');
+        jMenuItem6.setText("Novo");
+        jMenuItem6.setToolTipText("");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+        jMenu3.add(jSeparator3);
+
+        jMenuItem4.setMnemonic('t');
+        jMenuItem4.setText("Todos");
+        jMenuItem4.setToolTipText("");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        jMenuBar2.add(jMenu3);
 
         jMenu2.setText("Relatórios");
 
@@ -285,30 +455,50 @@ public class JFUsuario extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar2.add(jMenu2);
 
-        jMenu3.setText("Empréstimos");
+        jMenu5.setMnemonic('n');
+        jMenu5.setText("Navegação");
 
-        jMenuItem6.setText("Novo");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_LEFT, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem8.setText("Primeiro");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                jMenuItem8ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem6);
-        jMenu3.add(jSeparator3);
+        jMenu5.add(jMenuItem8);
 
-        jMenuItem4.setText("Todos");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_LEFT, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem9.setText("Anterior");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        jMenu5.add(jMenuItem9);
 
-        jMenuBar1.add(jMenu3);
+        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_RIGHT, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem10.setText("Próximo");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem10);
 
-        setJMenuBar(jMenuBar1);
+        jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_RIGHT, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem11.setText("Ultimo");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem11);
+
+        jMenuBar2.add(jMenu5);
+
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -359,68 +549,25 @@ public class JFUsuario extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
-                                    .addComponent(jDBTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(31, 31, 31)
-                                        .addComponent(jLabelPosicao)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButtonSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jDBTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 13, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jButtonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(5, 5, 5)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jDBButtonCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDBButtonSave1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jDBButtonNew1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jDBButtonDelete1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jDBButtonNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDBButtonLast1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jDBButtonFirst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jDBButtonPrevious1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jDBLabelCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelPosicao)))))
-                    .addComponent(jSeparator2))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,9 +641,9 @@ public class JFUsuario extends javax.swing.JFrame {
        je.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         String nome = JOptionPane.showInputDialog("Digite o Código");
@@ -530,7 +677,7 @@ public class JFUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jDBQueryUsuarioAfterScroll(lib.jdb.jdbquery.event.ScrollEventObject evt) {//GEN-FIRST:event_jDBQueryUsuarioAfterScroll
-        jLabelPosicao.setText("Posição: "+Integer.toString(jDBQueryUsuario.getRow())+" / ");
+        jLabelPosicao.setText(Integer.toString(jDBQueryUsuario.getRow())+" / ");
     }//GEN-LAST:event_jDBQueryUsuarioAfterScroll
 
     private void jDBQueryUsuarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDBQueryUsuarioPropertyChange
@@ -549,6 +696,46 @@ public class JFUsuario extends javax.swing.JFrame {
         jDBButtonCancel1.setEnabled(jDBQueryUsuario.isEditing() || jDBQueryUsuario.isInserting());
         
     }//GEN-LAST:event_jDBQueryUsuarioPropertyChange
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        jDBButtonNew1.doClick();
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        jDBButtonDelete1.doClick();
+    }//GEN-LAST:event_jMenuItem20ActionPerformed
+
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+        jDBButtonSave1.doClick();
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        jDBButtonCancel1.doClick();
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
+
+    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
+        jButtonSelecionar.doClick();
+    }//GEN-LAST:event_jMenuItem24ActionPerformed
+
+    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        jButtonFechar.doClick();
+    }//GEN-LAST:event_jMenuItem25ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        jDBButtonFirst1.doClick();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        jDBButtonPrevious1.doClick();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        jDBButtonNext1.doClick();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        jDBButtonLast1.doClick();
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -587,7 +774,7 @@ public class JFUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonSelecionar;
     private lib.jdb.control.jdbbuttoncancel.JDBButtonCancel jDBButtonCancel1;
     private lib.jdb.control.jdbbuttondelete.JDBButtonDelete jDBButtonDelete1;
@@ -626,17 +813,32 @@ public class JFUsuario extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
     // End of variables declaration//GEN-END:variables
 
     public String getId(){

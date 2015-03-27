@@ -1,14 +1,12 @@
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import javax.swing.JOptionPane;
 import lib.jdb.connection.JDBConnection;
 
 public class Principal {
 
-    //public static String relPath="c:\\Program Files (x86)\\Biblioteca\\Relatorios\\";
-    public static String relPath="src/Relatorios/";
+    public static String relPath="c:\\Program Files (x86)\\Biblioteca\\Relatorios\\";
+    //public static String relPath="src/Relatorios/";
     private JFPrincipal jp;
     private JDBConnection jdb;
     
@@ -47,7 +45,6 @@ public class Principal {
         jdb.setLoginPasswordLabel("Senha");
         jdb.setLoginUserLabel("Usuário");
         jdb.setLogInPromptTitle("SISTEMA DE BIBLIOTECA VMF");
-        
         jdb.setUsingLogInPrompt(true);
         jdb.connectDB();
     }

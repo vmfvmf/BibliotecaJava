@@ -1,12 +1,6 @@
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -232,7 +226,8 @@ public class JFPrincipal extends javax.swing.JFrame {
         if (JFileChooser.APPROVE_OPTION == jFileChooser1.showSaveDialog(this)) {
             Process p;
             try {
-                String cmd = "c:\\xampp\\mysql\\bin\\mysqldump -u root --triggers --add-drop-trigger -f --add-drop-database --databases biblioteca > "
+                String cmd = "c:\\xampp\\mysql\\bin\\mysqldump -u root -p9fs2w9w2 --triggers --add-drop-trigger -f "
+                        + "--add-drop-database --databases biblioteca > "
                         + jFileChooser1.getSelectedFile().getPath();
                 p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", cmd});
                 int p_complete = p.waitFor();
@@ -256,7 +251,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         if (JFileChooser.APPROVE_OPTION == option) {
             Process p;
             try {
-                String cmd = "c:\\xampp\\mysql\\bin\\mysql biblioteca -u root -e \"source "
+                String cmd = "c:\\xampp\\mysql\\bin\\mysql biblioteca -u root -p9fs2w9w2 -e \"source "
                         + jFileChooser1.getSelectedFile().getPath()+"\"";
                 p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", cmd});
                 int p_complete = p.waitFor();

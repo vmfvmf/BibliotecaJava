@@ -33,6 +33,7 @@ public class CustomTable extends JLabel implements TableCellRenderer {
                 
                 c.setBackground(isSelected ? new Color(17, 12, 198) : row % 2 == 0
                         ?  new Color(245, 247, 248) : new Color(226, 242, 251));
+                c.setFont(new Font("Noto Sans", isSelected? Font.BOLD : Font.PLAIN, 12));
                 return c;
             };
             @Override

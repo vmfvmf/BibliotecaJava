@@ -2,6 +2,7 @@
 import lib.jdb.connection.JDBConnection;
 import lib.jdb.control.jdbtable.JDBTable;
 import lib.jdb.jdbquery.JDBQuery;
+import lib.jdb.jdbquery.event.ScrollEventListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +26,11 @@ public class JFAuxiliar extends javax.swing.JFrame {
         this();
         jDBQuery1.setJDBConnection(jdb);
     }
+    
+    
+    public JDBQuery getJdbrQry(){
+        return jDBQuery1;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,6 +48,9 @@ public class JFAuxiliar extends javax.swing.JFrame {
         jDBQuery1.setConcurUpdatable(false);
 
         setTitle("Auxiliar");
+        setFocusable(false);
+        setResizable(false);
+        setType(java.awt.Window.Type.POPUP);
 
         jDBTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

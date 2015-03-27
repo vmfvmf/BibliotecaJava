@@ -60,7 +60,12 @@ order by e.data desc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="60" splitType="Stretch"/>
+		<band height="106" splitType="Stretch">
+			<image scaleImage="RealHeight" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="555" height="104" uuid="0a3962fa-fe8e-4a9f-895e-e559b8ebe7d9"/>
+				<imageExpression><![CDATA["/home/vmf/NetBeansProjects/BibliotecaJava/src/Relatorios/cabecalho.jpg"]]></imageExpression>
+			</image>
+		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
